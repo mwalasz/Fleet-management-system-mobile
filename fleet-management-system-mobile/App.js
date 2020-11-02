@@ -14,7 +14,7 @@ const App = () => {
         <Stack.Screen
           name="Authentication"
           component={LoginScreen}
-          options={{ title: 'Login' }}
+          options={{ title: 'System zarządzania pojazdami' }}
         />
         <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
