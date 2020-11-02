@@ -1,0 +1,12 @@
+{
+  "name": "fleet-management-system-mobile",
+  "displayName": "fleet-management-system-mobile",
+  "expo": {
+    "name": "fleet-management-system-mobile",
+    "slug": "fleet-management-system-mobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
