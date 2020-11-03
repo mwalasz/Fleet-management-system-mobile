@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, Button, StyleSheet } from "react-native";
 import LogoImage from "../../components/LogoImage";
 import LoginFormInput from "./components/LoginFormInput"
+import { appName, screenNames } from "../../utils/constans";
 
 const LoginScreen = ({ navigation }) => {
   const [mail, onChangeMail] = React.useState("");
@@ -38,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
               title="Zaloguj się"
               disabled={!isButtonActive}
               onPress={() =>
-                  navigation.navigate(screenNames.home)
+                  navigation.navigate(screenNames.welcomeHome)
               }
           />
         </View>

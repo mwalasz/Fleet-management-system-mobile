@@ -1,6 +1,10 @@
 export const screenNames = {
-    home: "Home",
-    login: "Login"
+    welcomeHome: "Witaj!",
+    login: "Login",
+    information: "Informacje",
+    settings: "Ustawienia",
+    vehicles: "Vehicles",
+    recording: "Nagrywanie",
 };
 
 export const appName = "System zarządzania pojazdami";
