@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Image, StyleSheet } from "react-native";
+import * as React from 'react';
+import { Image, StyleSheet } from 'react-native';
 
 const LogoImage = () => {
-    return <Image style={styles} source={require('../assets/logo.png')}/>;
+    return <Image style={styles} source={require('../assets/logo.png')} />;
 };
 
 const size = 300;
