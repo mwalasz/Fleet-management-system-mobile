@@ -1,8 +1,11 @@
-import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, View } from 'react-native';
+import backHandler from '../../handlers/backHandler';
 
 const RecordingScreen = ({ route, navigation }) => {
     const { id } = route.params;
+
+    useEffect(() => backHandler({ goBack: navigation.goBack }), []);
 
     return (
         <View>
