@@ -3,7 +3,7 @@ import { Button, StyleSheet, View, Text } from 'react-native';
 import VehiclesList from './components/VehiclesList';
 import FloatingButton from '../../components/FloatingButton';
 
-const VehiclesScreen = () => {
+const VehiclesScreen = ({ navigation }) => {
     const [selectedId, setSelectedId] = useState(null);
 
     const clickHandler = () => {
@@ -25,7 +25,10 @@ const VehiclesScreen = () => {
                     setSelectedId={setSelectedId}
                 />
             </View>
-            <FloatingButton onClick={() => alert('dupa')} />
+            <FloatingButton
+                disabled={selectedId === null}
+                onClick={() => alert('dupa')}
+            />
         </View>
     );
 };

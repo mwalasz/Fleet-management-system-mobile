@@ -20,9 +20,9 @@ const VehiclesListItem = ({ item, onPress, isSelected, theme }) => (
                 }}
             />
             <View style={styles.textContainer}>
-                <Text
-                    style={styles.title}
-                >{`${item.brand} ${item.model}`}</Text>
+                <Text style={styles.title}>
+                    {`${item.brand} ${item.model}`}
+                </Text>
                 <Text style={styles.licensePlate}>{item.licensePlate}</Text>
             </View>
         </View>

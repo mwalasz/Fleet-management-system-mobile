@@ -4,6 +4,7 @@ import { withTheme } from 'react-native-elements';
 
 const FloatingButton = ({ theme, disabled, onClick }) => {
     const gray = theme.colors.gray;
+    const red = theme.colors.red;
     const green = theme.colors.green;
 
     return (
@@ -11,7 +12,7 @@ const FloatingButton = ({ theme, disabled, onClick }) => {
             <TouchableOpacity
                 style={{
                     ...styles.button,
-                    backgroundColor: disabled ? gray : green,
+                    backgroundColor: disabled ? red : green,
                 }}
                 disabled={disabled}
                 onPress={onClick}
@@ -40,6 +41,9 @@ const styles = StyleSheet.create({
         width: 70,
         alignContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: '#000',
     },
     image: {
         height: 35,

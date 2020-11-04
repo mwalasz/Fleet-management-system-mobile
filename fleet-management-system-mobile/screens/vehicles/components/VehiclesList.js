@@ -50,11 +50,13 @@ const DATA = [
 
 const VehiclesList = ({ selectedId, setSelectedId }) => {
     const renderItem = ({ item }) => {
+        const isItMe = item.id === selectedId;
+
         return (
             <VehiclesListItem
                 item={item}
-                onPress={() => setSelectedId(item.id)}
-                isSelected={item.id === selectedId}
+                onPress={() => setSelectedId(isItMe ? null : item.id)}
+                isSelected={isItMe}
             />
         );
     };
