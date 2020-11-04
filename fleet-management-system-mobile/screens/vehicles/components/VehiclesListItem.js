@@ -1,14 +1,15 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { withTheme } from 'react-native-elements';
 
-const setColor = (isSelected) => {
-    return isSelected ? '#6e3b6e' : '#f9c2ff';
+const setColor = (isSelected, theme) => {
+    return isSelected ? theme.colors.secondary : theme.colors.primary;
 };
 
-const VehiclesListItem = ({ item, onPress, isSelected }) => (
+const VehiclesListItem = ({ item, onPress, isSelected, theme }) => (
     <TouchableOpacity
         onPress={onPress}
-        style={{ ...styles.item, backgroundColor: setColor(isSelected) }}
+        style={{ ...styles.item, backgroundColor: setColor(isSelected, theme) }}
     >
         <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
@@ -22,4 +23,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default VehiclesListItem;
+export default withTheme(VehiclesListItem);
