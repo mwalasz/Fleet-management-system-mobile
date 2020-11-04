@@ -24,3 +24,6 @@ export const screenInfo = {
         title: 'Wybór pojazdów',
     },
 };
+
+export const defaultVehicleImagePath =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEnzWRkeRjv7fTFRWTFnFj3WrUakycnYxhAg&usqp=CAU';
