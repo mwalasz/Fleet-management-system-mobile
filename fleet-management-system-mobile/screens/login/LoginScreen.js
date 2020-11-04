@@ -1,13 +1,13 @@
-import * as React from "react";
-import { View, Button, StyleSheet } from "react-native";
-import LogoImage from "../../components/LogoImage";
-import LoginFormInput from "./components/LoginFormInput";
-import { appName, screenNames } from "../../utils/constans";
+import * as React from 'react';
+import { View, Button, StyleSheet } from 'react-native';
+import LogoImage from '../../components/LogoImage';
+import LoginFormInput from './components/LoginFormInput';
+import { screenInfo } from '../../utils/constans';
 
 const LoginScreen = ({ navigation }) => {
-    const [mail, onChangeMail] = React.useState("");
-    const [password, onChangePassword] = React.useState("");
-    const [isButtonActive, changeButtonActiveness] = React.useState(false);
+    const [mail, onChangeMail] = React.useState('test');
+    const [password, onChangePassword] = React.useState('test');
+    const [isButtonActive, changeButtonActiveness] = React.useState(true);
 
     const checkIfCanLogin = () => {
         changeButtonActiveness(mail.length > 0 && password.length > 0);
@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
                     styles={styles.button}
                     title="Zaloguj się"
                     disabled={!isButtonActive}
-                    onPress={() => navigation.navigate(screenNames.welcomeHome)}
+                    onPress={() => navigation.navigate(screenInfo.home.name)}
                 />
             </View>
         </View>
@@ -48,26 +48,26 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        flexDirection: "column",
-        backgroundColor: "#fff",
-        alignItems: "stretch",
-        justifyContent: "center",
-        flexDirection: "column",
+        flexDirection: 'column',
+        backgroundColor: '#fff',
+        alignItems: 'stretch',
+        justifyContent: 'center',
+        flexDirection: 'column',
     },
     inputsContainer: {
         flex: 2,
-        justifyContent: "center",
+        justifyContent: 'center',
         margin: 20,
-        alignItems: "center",
-        alignItems: "stretch",
+        alignItems: 'center',
+        alignItems: 'stretch',
         marginHorizontal: 40,
     },
     buttonContainer: {
         flex: 1,
-        justifyContent: "flex-end",
+        justifyContent: 'flex-end',
     },
     button: {
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
     },
 });
 

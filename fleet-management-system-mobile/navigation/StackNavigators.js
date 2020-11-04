@@ -1,25 +1,26 @@
-import React from "react";
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { screenNames, appName } from "../utils/constans";
-import LoginScreen from "../screens/login/LoginScreen";
-import HomeTabNavigator from "./HomeTabNavigator";
-import VehiclesScreen from "../screens/vehicles/VehiclesScreen"
-import RecordingScreen from "../screens/recording/RecordingScreen"
+import { screenInfo } from '../utils/constans';
+import LoginScreen from '../screens/login/LoginScreen';
+import HomeTabNavigator from './HomeTabNavigator';
+import VehiclesScreen from '../screens/vehicles/VehiclesScreen';
+import RecordingScreen from '../screens/recording/RecordingScreen';
 
 const Stack = createStackNavigator();
 
 // Starting stack
 const MainStackNavigator = () => {
-    return(
+    return (
         <Stack.Navigator initialRouteName={LoginScreen}>
-            <Stack.Screen 
-                name={screenNames.login}
+            <Stack.Screen
+                name={screenInfo.login.title}
+                options={{ title: screenInfo.login.title }}
                 component={LoginScreen}
-                options={{ title: appName }}
             />
             <Stack.Screen
-                name={screenNames.welcomeHome} 
-                component={HomeTabNavigator} 
+                name={screenInfo.home.name}
+                options={{ title: screenInfo.home.title }}
+                component={HomeTabNavigator}
             />
         </Stack.Navigator>
     );
@@ -27,15 +28,17 @@ const MainStackNavigator = () => {
 
 // Stack used in tab "recording"
 const RecordingStackNavigator = () => {
-    return(
+    return (
         <Stack.Navigator>
             <Stack.Screen
-                name={screenNames.vehicles} 
-                component={VehiclesScreen} 
+                name={screenInfo.vehicles.name}
+                options={{ title: screenInfo.vehicles.title }}
+                component={VehiclesScreen}
             />
             <Stack.Screen
-                name={screenNames.recording} 
-                component={RecordingScreen} 
+                name={screenInfo.recording.name}
+                options={{ title: screenInfo.recording.title }}
+                component={RecordingScreen}
             />
         </Stack.Navigator>
     );
