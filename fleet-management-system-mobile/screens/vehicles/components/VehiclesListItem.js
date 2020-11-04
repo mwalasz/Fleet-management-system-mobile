@@ -11,7 +11,7 @@ import { withTheme } from 'react-native-elements';
 import { defaultVehicleImagePath } from '../../../utils/constans';
 
 const setColor = (isSelected, theme) => {
-    return isSelected ? theme.colors.secondary : theme.colors.primary;
+    return isSelected ? theme.colors.gray : theme.colors.blue;
 };
 
 const VehiclesListItem = ({ item, onPress, isSelected, theme }) => (
