@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import VehiclesList from './components/VehiclesList';
 import FloatingButton from '../../components/FloatingButton';
+import { screenInfo } from '../../utils/constans';
 
 const VehiclesScreen = ({ navigation }) => {
     const [selectedId, setSelectedId] = useState(null);
-
-    const clickHandler = () => {
-        alert('Floating Button Clicked');
-    };
 
     return (
         <View style={styles.container}>
@@ -27,7 +24,11 @@ const VehiclesScreen = ({ navigation }) => {
             </View>
             <FloatingButton
                 disabled={selectedId === null}
-                onClick={() => alert('dupa')}
+                onClick={() =>
+                    navigation.navigate(screenInfo.recording.name, {
+                        id: selectedId,
+                    })
+                }
             />
         </View>
     );
