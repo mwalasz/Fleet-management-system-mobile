@@ -1,17 +1,17 @@
-import * as React from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import * as React from 'react';
+import { View, TextInput, Text, StyleSheet } from 'react-native';
 
-const LoginFormInput = ({mail, onChangeText, value}) => {
+const LoginFormInput = ({ mail, onChangeText, value }) => {
     return (
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 onChangeText={onChangeText}
                 value={value}
-                autoCompleteType={mail ? "email" : "password"}
+                autoCompleteType={mail ? 'email' : 'password'}
                 secureTextEntry={!mail}
-                />
-            <Text>{mail ? "Mail" : "Hasło"}</Text>
+            />
+            <Text>{mail ? 'Mail' : 'Hasło'}</Text>
         </View>
     );
 };
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingHorizontal: 10,
         marginTop: 20,
-    }
+    },
 });
 
 export default LoginFormInput;

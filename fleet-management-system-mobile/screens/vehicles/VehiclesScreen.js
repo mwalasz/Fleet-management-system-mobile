@@ -1,17 +1,23 @@
-import * as React from 'react';
-import { View, Text, Button } from 'react-native';
-import { screenInfo } from '../../utils/constans';
+import React, { useState } from 'react';
+import { StatusBar, StyleSheet } from 'react-native';
+import VehiclesList from './components/VehiclesList';
 
-const VehiclesScreen = ({ navigation }) => {
+const VehiclesScreen = () => {
+    const [selectedId, setSelectedId] = useState(null);
+
     return (
-        <View>
-            <Text>Vehicles screen</Text>
-            <Button
-                title={'Nagrywanie'}
-                onPress={() => navigation.navigate(screenInfo.recording.name)}
-            />
-        </View>
+        <VehiclesList selectedId={selectedId} setSelectedId={setSelectedId} />
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginTop: StatusBar.currentHeight || 0,
+    },
+    title: {
+        fontSize: 32,
+    },
+});
 
 export default VehiclesScreen;
