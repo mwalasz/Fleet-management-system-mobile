@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    Image,
-    View,
-    StatusBar,
-} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { defaultVehicleImagePath } from '../../../utils/constans';
 
 const setColor = (isSelected, theme) => {
-    return isSelected ? theme.colors.gray : theme.colors.blue;
+    return isSelected ? theme.colors.blue : theme.colors.gray;
 };
 
 const VehiclesListItem = ({ item, onPress, isSelected, theme }) => (

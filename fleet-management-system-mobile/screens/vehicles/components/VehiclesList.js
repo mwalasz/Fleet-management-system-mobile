@@ -61,11 +61,6 @@ const VehiclesList = ({ selectedId, setSelectedId }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.text}>
-                <Text>
-                    {'Wybierz jeden z dostępnych pojazdów, aby zacząć podróż:'}
-                </Text>
-            </View>
             <FlatList
                 style={styles.list}
                 data={DATA}
@@ -80,17 +75,7 @@ const VehiclesList = ({ selectedId, setSelectedId }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    text: {
-        backgroundColor: '#fff',
-        padding: 15,
-        marginTop: 10,
-        alignContent: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+    container: {},
     list: {},
 });
 

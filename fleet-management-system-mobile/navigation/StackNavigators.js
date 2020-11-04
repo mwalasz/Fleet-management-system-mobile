@@ -19,7 +19,9 @@ const MainStackNavigator = () => {
             />
             <Stack.Screen
                 name={screenInfo.home.name}
-                options={{ title: screenInfo.home.title }}
+                options={{
+                    title: screenInfo.home.title,
+                }}
                 component={HomeTabNavigator}
             />
         </Stack.Navigator>
