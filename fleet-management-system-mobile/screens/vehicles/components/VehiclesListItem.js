@@ -1,6 +1,8 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import TextCard from '../../../components/TextCard';
+import Avatar from '../../../components/Avatar';
 import { defaultVehicleImagePath } from '../../../utils/constans';
 
 const setColor = (isSelected, theme) => {
@@ -13,18 +15,13 @@ const VehiclesListItem = ({ item, onPress, isSelected, theme }) => (
         style={{ ...styles.item, backgroundColor: setColor(isSelected, theme) }}
     >
         <View style={styles.container}>
-            <Image
-                style={styles.image}
-                source={{
-                    uri: defaultVehicleImagePath,
-                }}
-            />
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>
-                    {`${item.brand} ${item.model}`}
-                </Text>
-                <Text style={styles.licensePlate}>{item.licensePlate}</Text>
+            <View style={styles.avatar}>
+                <Avatar source={defaultVehicleImagePath} />
             </View>
+            <TextCard
+                title={`${item.brand} ${item.model}`}
+                content={item.licensePlate}
+            />
         </View>
     </TouchableOpacity>
 );
@@ -36,31 +33,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         borderRadius: 20,
     },
-    image: {
-        width: 100,
-        height: 100,
-        borderRadius: 400,
+    avatar: {
         marginRight: 20,
     },
     container: {
         flex: 1,
         flexDirection: 'row',
-    },
-    textContainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-        flexDirection: 'column',
-        alignContent: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20,
-    },
-    title: {
-        fontSize: 17,
-        paddingBottom: 5,
-    },
-    licensePlate: {
-        fontStyle: 'italic',
     },
 });
 
