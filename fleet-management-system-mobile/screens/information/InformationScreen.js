@@ -28,7 +28,7 @@ const InformationScreen = ({ navigation }) => {
                 <Title border text={'Twoje statystyki'} />
                 <View style={styles.data}>
                     <RowData info={'Ilość tras'} data={'4'} />
-                    <RowData info={'Dystans'} data={'1234 km'} />
+                    <RowData info={'Łączny dystans'} data={'1234 km'} />
                     <RowData info={'Średnia prędkość'} data={'85 km/h'} />
                 </View>
             </View>
