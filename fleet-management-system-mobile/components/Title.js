@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, Modal } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 const Title = ({ border, text }) => {
     return (
