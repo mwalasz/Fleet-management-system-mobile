@@ -1,13 +1,17 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Alert, Modal } from 'react-native';
 import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
 import { defaultUserPath } from '../../utils/constans';
 import RowData from './components/RowData';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CompanyModal from './components/CompanyModal';
+import Title from '../../components/Title';
 
 const InformationScreen = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+
     return (
         <View style={styles.container}>
             <View style={styles.userInfoContainer}>
@@ -21,7 +25,7 @@ const InformationScreen = ({ navigation }) => {
                 />
             </View>
             <View style={styles.statisticsContainer}>
-                <Text style={styles.title}>Twoje Statystyki</Text>
+                <Title border text={'Twoje statystyki'} />
                 <View style={styles.data}>
                     <RowData info={'Ilość tras'} data={'4'} />
                     <RowData info={'Dystans'} data={'1234 km'} />
@@ -36,15 +40,17 @@ const InformationScreen = ({ navigation }) => {
                     icon={<Icon name="info-circle" size={15} color="white" />}
                     containerStyle={{ alignSelf: 'stretch' }}
                     onPress={() => {
-                        Alert.alert('asdas');
+                        setModalVisible(true);
                     }}
                 />
             </View>
+            <CompanyModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+            />
         </View>
     );
 };
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -63,14 +69,6 @@ const styles = StyleSheet.create({
         position: 'relative',
         left: 16,
         elevation: 1,
-    },
-    title: {
-        borderBottomWidth: 1,
-        paddingBottom: 20,
-        borderBottomColor: 'black',
-        marginBottom: 15,
-        fontWeight: 'bold',
-        fontSize: 30,
     },
     statisticsContainer: {
         backgroundColor: '#fff',
