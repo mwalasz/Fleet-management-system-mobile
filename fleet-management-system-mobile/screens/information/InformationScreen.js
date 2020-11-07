@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
 import { defaultUserPath } from '../../utils/constans';
 import RowData from './components/RowData';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const InformationScreen = ({ navigation }) => {
     return (
@@ -26,9 +28,23 @@ const InformationScreen = ({ navigation }) => {
                     <RowData info={'Średnia prędkość'} data={'85 km/h'} />
                 </View>
             </View>
+            <View style={styles.button}>
+                <Button
+                    title={'Firma'}
+                    titleStyle={{ marginRight: 10 }}
+                    iconRight
+                    icon={<Icon name="info-circle" size={15} color="white" />}
+                    containerStyle={{ alignSelf: 'stretch' }}
+                    onPress={() => {
+                        Alert.alert('asdas');
+                    }}
+                />
+            </View>
         </View>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -41,7 +57,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         marginHorizontal: 20,
-        marginVertical: 40,
+        marginVertical: 30,
     },
     avatar: {
         position: 'relative',
@@ -52,7 +68,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingBottom: 20,
         borderBottomColor: 'black',
-        marginBottom: 20,
+        marginBottom: 15,
         fontWeight: 'bold',
         fontSize: 30,
     },
@@ -63,6 +79,13 @@ const styles = StyleSheet.create({
     },
     data: {
         marginTop: 20,
+    },
+    button: {
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: 20,
+        width: 300,
+        // right: 0,
     },
 });
 
