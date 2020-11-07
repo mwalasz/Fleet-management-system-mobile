@@ -13,7 +13,7 @@ const MainStackNavigator = () => {
     return (
         <Stack.Navigator initialRouteName={LoginScreen}>
             <Stack.Screen
-                name={screenInfo.login.title}
+                name={screenInfo.login.name}
                 options={{ title: screenInfo.login.title }}
                 component={LoginScreen}
             />

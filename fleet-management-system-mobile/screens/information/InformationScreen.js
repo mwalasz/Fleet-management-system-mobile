@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert, Modal } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
@@ -8,6 +8,7 @@ import RowData from './components/RowData';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CompanyModal from './components/CompanyModal';
 import Title from '../../components/Title';
+import { Dimensions } from 'react-native';
 
 const InformationScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         bottom: 20,
-        width: 300,
+        width: Math.round(Dimensions.get('window').width) - 40,
         // right: 0,
     },
 });
