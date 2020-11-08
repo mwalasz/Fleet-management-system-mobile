@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { MainStackNavigator } from './navigation/StackNavigators';
+// import MainStackNavigator from './navigation/MainStackNavigator';
+import { MainStackNavigator } from './navigation/Navigation';
 import { ThemeProvider } from 'react-native-elements';
 import { defaultTheme } from './utils/themes';
 
