@@ -7,43 +7,85 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
-const RecordingScreen = ({ route, navigation }) => {
-    const { id } = route.params;
-    const [lastLocation, setLastLocation] = useState(null);
-    const [geocode, setGeocode] = useState(null);
-    const [error, setError] = useState('');
+class RecordingScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            locationObj: null,
+            currentLatitude: null,
+            currentLongitude: '',
+            locationHistory: [],
+            error: '',
+        };
+    }
 
-    // useEffect(() => backHandler({ goBack: navigation.goBack }), []);
+    validatePermissions = async () => {
+        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        let { status } = await Permissions.getAsync(Permissions.LOCATION);
 
-    getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        console.log('status');
+        console.log(status);
+
         if (status !== 'granted') {
-            setError('Permission to access location was denied');
+            let { newStatus } = await Permissions.askAsync(
+                Permissions.LOCATION
+            );
+
+            if (newStatus !== 'granted') {
+                console.log('Brak pozwoleń!');
+
+                return false;
+            }
         }
 
-        let location = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Low,
-        });
-        const { latitude, longitude } = location.coords;
-        getGeocodeAsync({ latitude, longitude });
-        setLastLocation({ latitude, longitude });
+        return true;
     };
 
-    getGeocodeAsync = async (location) => {
-        let geocode = await Location.reverseGeocodeAsync(location);
-        setGeocode(geocode);
+    start = async () => {
+        if (await this.validatePermissions()) {
+            const loc = await Location.watchPositionAsync(
+                {
+                    accuracy: Location.LocationAccuracy.High,
+                    distanceInterval: 5,
+                    timeInterval: 2000,
+                },
+                (newLocation) => {
+                    console.log('newLocation');
+                    console.log(newLocation);
+                    let { latitude, longitude } = newLocation.coords;
+
+                    this.setState({ latitude, longitude });
+                    this.setState((prevState) => ({
+                        locationHistory: [
+                            ...prevState.locationHistory,
+                            { latitude, longitude },
+                        ],
+                    }));
+                },
+                (error) => console.log(error)
+            );
+
+            this.setState({ location: loc });
+        }
+
+        this.setState({ error: 'No permission granted!' });
     };
 
-    useEffect(() => {
-        getLocationAsync();
-    }, []);
+    startRecording = async () => {
+        await this.start();
+    };
 
-    return (
-        <View styles={styles.container}>
-            {/* <Text>Recording screen</Text>
+    stopRecording = async () => {
+        if (this.state.locationObj) await this.state.locationObj.remove();
+    };
+
+    render() {
+        return (
+            <View styles={styles.container}>
+                {/* <Text>Recording screen</Text>
             <Text>{`Id of selected car to use: ${id}`}</Text> */}
 
-            {/* <View style={styles.button}>
+                {/* <View style={styles.button}>
                 <Button
                     title={'Start recording'}
                     titleStyle={{ marginRight: 10 }}
@@ -57,37 +99,43 @@ const RecordingScreen = ({ route, navigation }) => {
                     }}
                 />
             </View> */}
-            <View style={styles.mapsContainer}>
-                <MapView
-                    showsCompass
-                    showsUserLocation
-                    showsMyLocationButton
-                    provider={PROVIDER_GOOGLE}
-                    style={styles.maps}
-                    region={{
-                        latitude: lastLocation
-                            ? lastLocation.latitude
-                            : 37.78825,
-                        longitude: lastLocation
-                            ? lastLocation.longitude
-                            : -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                />
+                <View style={styles.mapsContainer}>
+                    <MapView
+                        showsCompass
+                        showsUserLocation
+                        showsMyLocationButton
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.maps}
+                        // region={{
+                        //     latitude: this.state.location
+                        //         ? // ? parseFloat(this.state.latitude)
+                        //           this.state.latitude
+                        //         : 37.78825,
+                        //     longitude: this.state.location
+                        //         ? this.state.longitude
+                        //         : -122.4324,
+                        //     latitudeDelta: 0.0922,
+                        //     longitudeDelta: 0.0421,
+                        // }}
+                    />
+                </View>
+                <View style={styles.locationTextContainer}>
+                    <Text style={styles.locationText}>
+                        <Text style={styles.title}>Current position: </Text>
+                        {this.state.locationObj
+                            ? `latitude: ${this.state.currentLatitude}, longitude: ${this.state.currentLongitude}`
+                            : ''}
+                    </Text>
+                    <Button title={'Start'} onPress={this.startRecording} />
+                    <Button
+                        title={'Stop'}
+                        onPress={() => this.stopRecording()}
+                    />
+                </View>
             </View>
-            <View style={styles.locationTextContainer}>
-                <Text style={styles.locationText}>
-                    <Text style={styles.title}>Current position: </Text>
-                    {lastLocation
-                        ? `latitude: ${lastLocation.latitude}, longtitude: ${lastLocation.longitude}`
-                        : ''}
-                </Text>
-                <Button title={'Update'} onPress={() => {}} />
-            </View>
-        </View>
-    );
-};
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
