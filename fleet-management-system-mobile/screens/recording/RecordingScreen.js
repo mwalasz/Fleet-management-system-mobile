@@ -6,16 +6,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import { Dimensions } from 'react-native';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.locationObj = null;
         this.state = {
-            locationObj: null,
             currentLatitude: null,
             currentLongitude: '',
             locationHistory: [],
             error: '',
+            isRecording: false,
         };
     }
 
@@ -43,7 +45,7 @@ class RecordingScreen extends React.Component {
 
     start = async () => {
         if (await this.validatePermissions()) {
-            const loc = await Location.watchPositionAsync(
+            this.locationObj = await Location.watchPositionAsync(
                 {
                     accuracy: Location.LocationAccuracy.High,
                     distanceInterval: 5,
@@ -61,11 +63,8 @@ class RecordingScreen extends React.Component {
                             { latitude, longitude },
                         ],
                     }));
-                },
-                (error) => console.log(error)
+                }
             );
-
-            this.setState({ location: loc });
         }
 
         this.setState({ error: 'No permission granted!' });
@@ -73,10 +72,14 @@ class RecordingScreen extends React.Component {
 
     startRecording = async () => {
         await this.start();
+        this.setState({ isRecording: true });
     };
 
     stopRecording = async () => {
-        if (this.state.locationObj) await this.state.locationObj.remove();
+        if (this.state.isRecording && this.locationObj !== null) {
+            this.locationObj.remove();
+            this.setState({ isRecording: false });
+        }
     };
 
     render() {
@@ -121,15 +124,18 @@ class RecordingScreen extends React.Component {
                 </View>
                 <View style={styles.locationTextContainer}>
                     <Text style={styles.locationText}>
-                        <Text style={styles.title}>Current position: </Text>
                         {this.state.locationObj
-                            ? `latitude: ${this.state.currentLatitude}, longitude: ${this.state.currentLongitude}`
+                            ? `Current position: latitude: ${this.state.currentLatitude}, longitude: ${this.state.currentLongitude}`
                             : ''}
                     </Text>
-                    <Button title={'Start'} onPress={this.startRecording} />
                     <Button
-                        title={'Stop'}
-                        onPress={() => this.stopRecording()}
+                        style={styles.button}
+                        title={this.state.isRecording ? 'Stop' : 'Start'}
+                        onPress={
+                            this.state.isRecording
+                                ? this.stopRecording
+                                : this.startRecording
+                        }
                     />
                 </View>
             </View>
@@ -143,18 +149,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    button: {
-        position: 'absolute',
-    },
-    maps: {
-        flex: 1,
-    },
+    button: {},
+    maps: {},
     mapsContainer: {
         ...StyleSheet.absoluteFillObject,
-        height: 400,
-        width: 400,
+        height: Math.round(Dimensions.get('window').height - 300),
+        width: Math.round(Dimensions.get('window').width),
         justifyContent: 'flex-end',
         alignItems: 'center',
+        elevation: -1,
     },
     maps: {
         ...StyleSheet.absoluteFillObject,
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         justifyContent: 'center',
-        bottom: -600,
+        elevation: 3,
     },
 });
 
