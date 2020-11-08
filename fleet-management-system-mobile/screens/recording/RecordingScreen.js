@@ -152,19 +152,51 @@ class RecordingScreen extends React.Component {
                 </View>
                 <View style={styles.locationTextContainer}>
                     <Text style={styles.locationText}>
-                        {this.state.isRecording
-                            ? `Current position: \nlatitude: ${this.state.currentLatitude}, longitude: ${this.state.currentLongitude}`
-                            : 'Zacznij nagrywać podróż:'}
+                        {'Zacznij nagrywać podróż:'}
                     </Text>
-                    <Button
-                        buttonStyle={styles.button}
-                        title={this.state.isRecording ? 'Stop' : 'Start'}
-                        onPress={
-                            this.state.isRecording
-                                ? this.stopRecording
-                                : this.startRecording
-                        }
-                    />
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-around',
+                            alignContent: 'center',
+                        }}
+                    >
+                        <View
+                            style={{
+                                flex: 3,
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Text>Dystans: 10km</Text>
+                            <Text>Czas: 20min</Text>
+                            <Text>Prędkość: 30km/h</Text>
+                            <Text>{`latitude: ${
+                                this.state.isRecording
+                                    ? this.state.currentLatitude
+                                    : ''
+                            }`}</Text>
+                            <Text>{`longitude: ${
+                                this.state.isRecording
+                                    ? this.state.currentLongitude
+                                    : ''
+                            }`}</Text>
+                        </View>
+                        <View style={{ flex: 2, alignContent: 'center' }}>
+                            <Button
+                                buttonStyle={styles.button}
+                                title={
+                                    this.state.isRecording ? 'Stop' : 'Start'
+                                }
+                                onPress={
+                                    this.state.isRecording
+                                        ? this.stopRecording
+                                        : this.startRecording
+                                }
+                            />
+                        </View>
+                    </View>
                 </View>
             </View>
         );
@@ -177,10 +209,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    button: { width: 200, alignSelf: 'center' },
+    button: { width: 100, alignSelf: 'center' },
     maps: {
         ...StyleSheet.absoluteFillObject,
-        height: Math.round(Dimensions.get('window').height),
+        height: Math.round(Dimensions.get('window').height) - 350,
         width: Math.round(Dimensions.get('window').width),
         elevation: -100,
     },
@@ -189,11 +221,13 @@ const styles = StyleSheet.create({
         elevation: 3,
         position: 'absolute',
         alignSelf: 'center',
-        top: Math.round(Dimensions.get('window').height) - 270,
+        paddingLeft: 25,
+        paddingBottom: 20,
+        paddingTop: 10,
+        top: Math.round(Dimensions.get('window').height) - 320,
         width: Math.round(Dimensions.get('window').width) - 50,
-        height: 100,
+        height: 150,
         borderRadius: 40,
-        alignContent: 'center',
         textAlign: 'center',
         justifyContent: 'space-around',
         elevation: 3,
