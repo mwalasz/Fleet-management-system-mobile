@@ -18,7 +18,7 @@ const LoginFormInput = ({ mail, onChangeText, value }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
     },
     input: {
         height: 50,

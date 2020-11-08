@@ -1,14 +1,28 @@
 import * as React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 
 const LogoImage = () => {
-    return <Image style={styles} source={require('../assets/logo.png')} />;
+    return (
+        <View style={styles.container}>
+            <Image
+                style={styles.image}
+                source={require('../assets/logo.png')}
+            />
+        </View>
+    );
 };
 
-const size = 300;
+const size = 250;
 const styles = StyleSheet.create({
-    height: size,
-    width: size,
+    container: {
+        alignContent: 'center',
+        justifyContent: 'center',
+    },
+    image: {
+        alignSelf: 'center',
+        height: size,
+        width: size,
+    },
 });
 
 export default LogoImage;

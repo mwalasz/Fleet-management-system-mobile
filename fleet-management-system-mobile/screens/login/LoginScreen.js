@@ -1,8 +1,19 @@
 import * as React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import {
+    View,
+    KeyboardAvoidingView,
+    TextInput,
+    StyleSheet,
+    Text,
+    Platform,
+    TouchableWithoutFeedback,
+    Button,
+    Keyboard,
+} from 'react-native';
 import LogoImage from '../../components/LogoImage';
 import LoginFormInput from './components/LoginFormInput';
 import { screenInfo } from '../../utils/constans';
+import { Header } from '@react-navigation/stack';
 
 const LoginScreen = ({ navigation }) => {
     const [mail, onChangeMail] = React.useState('test');
@@ -14,60 +25,67 @@ const LoginScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.mainContainer}>
-            <View style={styles.inputsContainer}>
-                <LogoImage />
-                <LoginFormInput
-                    mail
-                    value={mail}
-                    onChangeText={(text) => {
-                        onChangeMail(text);
-                        checkIfCanLogin();
-                    }}
-                />
-                <LoginFormInput
-                    value={password}
-                    onChangeText={(text) => {
-                        onChangePassword(text);
-                        checkIfCanLogin();
-                    }}
-                />
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button
-                    styles={styles.button}
-                    title="Zaloguj się"
-                    disabled={!isButtonActive}
-                    onPress={() => navigation.navigate(screenInfo.home.name)}
-                />
-            </View>
-        </View>
+        <KeyboardAvoidingView
+            keyboardVerticalOffset={Header.HEIGHT + 20}
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            style={styles.container}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.inner}>
+                    <LogoImage />
+                    <LoginFormInput
+                        mail
+                        value={mail}
+                        onChangeText={(text) => {
+                            onChangeMail(text);
+                            checkIfCanLogin();
+                        }}
+                    />
+                    <LoginFormInput
+                        value={password}
+                        onChangeText={(text) => {
+                            onChangePassword(text);
+                            checkIfCanLogin();
+                        }}
+                    />
+                    <View style={styles.btnContainer}>
+                        <Button
+                            styles={styles.button}
+                            title="Zaloguj się"
+                            disabled={!isButtonActive}
+                            onPress={() =>
+                                navigation.navigate(screenInfo.home.name)
+                            }
+                        />
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
-    mainContainer: {
+    container: {
         flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-        alignItems: 'stretch',
-        justifyContent: 'center',
-        flexDirection: 'column',
     },
-    inputsContainer: {
-        flex: 2,
-        justifyContent: 'center',
-        margin: 20,
-        alignItems: 'center',
-        alignItems: 'stretch',
-        marginHorizontal: 40,
-    },
-    buttonContainer: {
+    inner: {
+        padding: 40,
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-around',
     },
-    button: {
-        backgroundColor: '#fff',
+    header: {
+        fontSize: 36,
+        marginBottom: 48,
+    },
+    textInput: {
+        height: 40,
+        borderColor: '#000000',
+        borderBottomWidth: 1,
+        marginBottom: 36,
+    },
+    btnContainer: {
+        backgroundColor: 'white',
+        marginTop: 42,
     },
 });
 
