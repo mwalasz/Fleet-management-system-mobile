@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     button: { width: 100, alignSelf: 'center' },
     maps: {
         ...StyleSheet.absoluteFillObject,
-        height: Math.round(Dimensions.get('window').height) - 350,
+        height: Math.round(Dimensions.get('window').height) - 250,
         width: Math.round(Dimensions.get('window').width),
         elevation: -100,
     },
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
         paddingLeft: 25,
         paddingBottom: 20,
         paddingTop: 10,
-        top: Math.round(Dimensions.get('window').height) - 320,
+        top: Math.round(Dimensions.get('window').height) - 235,
         width: Math.round(Dimensions.get('window').width) - 50,
         height: 150,
         borderRadius: 40,
@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     locationText: {
         fontWeight: 'bold',
         alignSelf: 'center',
+        marginBottom: 10,
     },
 });
 

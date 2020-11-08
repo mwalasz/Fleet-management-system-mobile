@@ -9,10 +9,19 @@ const Tab = createMaterialTopTabNavigator();
 
 const HomeTabNavigator = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            tabBarOptions={{
+                inactiveTintColor: '#000',
+                activeTintColor: '#2196F3',
+                tabStyle: { marginTop: 15, paddingBottom: 5 },
+            }}
+        >
             <Tab.Screen
                 name={screenInfo.recording.name}
-                options={{ title: screenInfo.recording.title }}
+                options={{
+                    title: screenInfo.recording.title,
+                    marginTop: 20,
+                }}
                 component={RecordingStackNavigator}
             />
             <Tab.Screen

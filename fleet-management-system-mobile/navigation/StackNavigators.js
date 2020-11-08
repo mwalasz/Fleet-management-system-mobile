@@ -20,6 +20,7 @@ const MainStackNavigator = () => {
             <Stack.Screen
                 name={screenInfo.home.name}
                 options={{
+                    headerShown: false,
                     title: screenInfo.home.title,
                 }}
                 component={HomeTabNavigator}
@@ -34,12 +35,18 @@ const RecordingStackNavigator = () => {
         <Stack.Navigator>
             <Stack.Screen
                 name={screenInfo.vehicles.name}
-                options={{ title: screenInfo.vehicles.title }}
+                options={{
+                    title: screenInfo.vehicles.title,
+                    headerShown: false,
+                }}
                 component={VehiclesScreen}
             />
             <Stack.Screen
                 name={screenInfo.recording.name}
-                options={{ title: screenInfo.recording.title }}
+                options={{
+                    title: screenInfo.recording.title,
+                    headerShown: false,
+                }}
                 component={RecordingScreen}
             />
         </Stack.Navigator>
