@@ -2,18 +2,17 @@ import * as React from 'react';
 import {
     View,
     KeyboardAvoidingView,
-    TextInput,
     StyleSheet,
-    Text,
     Platform,
     TouchableWithoutFeedback,
-    Button,
     Keyboard,
 } from 'react-native';
 import LogoImage from '../../components/LogoImage';
 import LoginFormInput from './components/LoginFormInput';
 import { screenInfo } from '../../utils/constans';
 import { Header } from '@react-navigation/stack';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
     const [mail, onChangeMail] = React.useState('test');
@@ -50,12 +49,16 @@ const LoginScreen = ({ navigation }) => {
                     />
                     <View style={styles.btnContainer}>
                         <Button
-                            styles={styles.button}
+                            containerStyle={styles.button}
                             title="Zaloguj się"
+                            titleStyle={{ marginRight: 10 }}
+                            iconRight
+                            icon={<Icon name="user" size={15} color="white" />}
                             disabled={!isButtonActive}
                             onPress={() =>
                                 navigation.navigate(screenInfo.home.name)
                             }
+                            loading={!isButtonActive}
                         />
                     </View>
                 </View>

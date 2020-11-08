@@ -5,6 +5,7 @@ const LoginFormInput = ({ mail, onChangeText, value }) => {
     return (
         <View style={styles.container}>
             <TextInput
+                placeholder={'Podaj ' + (mail ? 'mail' : 'hasło')}
                 style={styles.input}
                 onChangeText={onChangeText}
                 value={value}
