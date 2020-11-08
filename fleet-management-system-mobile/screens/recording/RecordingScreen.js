@@ -11,13 +11,17 @@ import { Dimensions } from 'react-native';
 class RecordingScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.DELTA = 0.005;
         this.locationObj = null;
+        this.mapRef = null;
+        this.region = null;
         this.state = {
             currentLatitude: null,
             currentLongitude: '',
             locationHistory: [],
             error: '',
             isRecording: false,
+            currentRegion: null,
         };
     }
 
@@ -49,18 +53,24 @@ class RecordingScreen extends React.Component {
                 {
                     accuracy: Location.LocationAccuracy.High,
                     distanceInterval: 5,
-                    timeInterval: 2000,
+                    timeInterval: 1000,
                 },
                 (newLocation) => {
-                    console.log('newLocation');
-                    console.log(newLocation);
+                    // console.log('newLocation');
+                    // console.log(newLocation);
                     let { latitude, longitude } = newLocation.coords;
 
-                    this.setState({ latitude, longitude });
+                    this.setState({
+                        currentLatitude: latitude,
+                        currentLongitude: longitude,
+                    });
                     this.setState((prevState) => ({
                         locationHistory: [
                             ...prevState.locationHistory,
-                            { latitude, longitude },
+                            {
+                                currentLatitude: latitude,
+                                currentLongitude: longitude,
+                            },
                         ],
                     }));
                 }
@@ -82,54 +92,72 @@ class RecordingScreen extends React.Component {
         }
     };
 
+    /////////////////////////////////////////////////////////////////////
+
+    userLocationChanged(event) {
+        const newRegion = event.nativeEvent.coordinate;
+
+        this.region = {
+            ...this.region,
+            latitude: newRegion.latitude,
+            longitude: newRegion.longitude,
+        };
+
+        this.animateToRegion();
+    }
+
+    animateToRegion() {
+        if (this.mapRef) {
+            this.mapRef.animateToRegion(
+                {
+                    latitude: this.region.latitude,
+                    longitude: this.region.longitude,
+                    latitudeDelta: this.region.latitudeDelta,
+                    longitudeDelta: this.region.longitudeDelta,
+                },
+                800
+            );
+        }
+    }
+
+    regionChanged(event) {
+        this.region = {
+            longitudeDelta: this.DELTA,
+            latitudeDelta: this.DELTA,
+            latitude: event.latitude,
+            longitude: event.longitude,
+        };
+    }
+
     render() {
         return (
             <View styles={styles.container}>
-                {/* <Text>Recording screen</Text>
-            <Text>{`Id of selected car to use: ${id}`}</Text> */}
-
-                {/* <View style={styles.button}>
-                <Button
-                    title={'Start recording'}
-                    titleStyle={{ marginRight: 10 }}
-                    iconRight
-                    icon={
-                        <Icon name="hourglass-start" size={15} color="white" />
-                    }
-                    containerStyle={{ alignSelf: 'stretch' }}
-                    onPress={() => {
-                        Alert.alert('Start!');
-                    }}
-                />
-            </View> */}
-                <View style={styles.mapsContainer}>
+                <View>
                     <MapView
-                        showsCompass
-                        showsUserLocation
-                        showsMyLocationButton
-                        provider={PROVIDER_GOOGLE}
+                        ref={(map) => {
+                            this.mapRef = map;
+                        }}
                         style={styles.maps}
-                        // region={{
-                        //     latitude: this.state.location
-                        //         ? // ? parseFloat(this.state.latitude)
-                        //           this.state.latitude
-                        //         : 37.78825,
-                        //     longitude: this.state.location
-                        //         ? this.state.longitude
-                        //         : -122.4324,
-                        //     latitudeDelta: 0.0922,
-                        //     longitudeDelta: 0.0421,
-                        // }}
+                        followsUserLocation={true}
+                        loadingEnabled={true}
+                        showsUserLocation={true}
+                        showsMyLocationButton={true}
+                        provider={PROVIDER_GOOGLE}
+                        // onRegionChange={(event) => this.regionChanged(event)}
+                        onUserLocationChange={(event) => {
+                            this.regionChanged(event);
+                            this.userLocationChanged(event);
+                        }}
                     />
                 </View>
                 <View style={styles.locationTextContainer}>
                     <Text style={styles.locationText}>
-                        {this.state.locationObj
-                            ? `Current position: latitude: ${this.state.currentLatitude}, longitude: ${this.state.currentLongitude}`
-                            : ''}
+                        {this.state.isRecording
+                            ? `Current position: \nlatitude: ${this.state.currentLatitude}, longitude: ${this.state.currentLongitude}`
+                            : 'Zacznij nagrywać podróż:'}
                     </Text>
                     <Button
-                        style={styles.button}
+                        buttonStyle={styles.button}
                         title={this.state.isRecording ? 'Stop' : 'Start'}
                         onPress={
                             this.state.isRecording
@@ -149,28 +177,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    button: {},
-    maps: {},
-    mapsContainer: {
-        ...StyleSheet.absoluteFillObject,
-        height: Math.round(Dimensions.get('window').height - 300),
-        width: Math.round(Dimensions.get('window').width),
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        elevation: -1,
-    },
+    button: { width: 200, alignSelf: 'center' },
     maps: {
         ...StyleSheet.absoluteFillObject,
+        height: Math.round(Dimensions.get('window').height),
+        width: Math.round(Dimensions.get('window').width),
+        elevation: -100,
+    },
+    locationTextContainer: {
+        backgroundColor: '#fff',
+        elevation: 3,
+        position: 'absolute',
+        alignSelf: 'center',
+        top: Math.round(Dimensions.get('window').height) - 270,
+        width: Math.round(Dimensions.get('window').width) - 50,
+        height: 100,
+        borderRadius: 40,
+        alignContent: 'center',
+        textAlign: 'center',
+        justifyContent: 'space-around',
+        elevation: 3,
     },
     locationText: {
         fontWeight: 'bold',
-    },
-    locationTextContainer: {
-        flex: 1,
-        alignItems: 'center',
-        position: 'absolute',
-        justifyContent: 'center',
-        elevation: 3,
+        alignSelf: 'center',
     },
 });
 
