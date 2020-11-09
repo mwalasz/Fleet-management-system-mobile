@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Title from './Title';
 import RowData from './RowData';
 
-const Modal = ({ modalVisible, hideModal }) => {
+const Modal = ({ modalVisible, hideModal, title, data }) => {
     return (
         <View style={styles.centeredView}>
             <ModalNative
@@ -16,7 +16,7 @@ const Modal = ({ modalVisible, hideModal }) => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Title border text={'Korporacjonex'} />
+                        <Title border text={title} />
                         <View style={styles.data}>
                             <RowData
                                 info={'Adres'}

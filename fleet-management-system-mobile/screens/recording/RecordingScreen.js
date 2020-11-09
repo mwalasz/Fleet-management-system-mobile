@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { Dimensions } from 'react-native';
 import Modal from '../../components/Modal';
+import RowData from '../../components/RowData';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
@@ -174,23 +175,45 @@ class RecordingScreen extends React.Component {
                                 justifyContent: 'center',
                             }}
                         >
-                            <Text>Dystans: 10km</Text>
-                            <Text>Czas: 20min</Text>
-                            <Text>Prędkość: 30km/h</Text>
-                            <Text>{`latitude: ${
-                                this.state.isRecording
-                                    ? this.state.currentLatitude
-                                    : ''
-                            }`}</Text>
-                            <Text>{`longitude: ${
-                                this.state.isRecording
-                                    ? this.state.currentLongitude
-                                    : ''
-                            }`}</Text>
+                            <RowData noMargin info={'Dystans'} data={'10km'} />
+                            <RowData noMargin info={'Czas'} data={'10km'} />
+                            <RowData
+                                noMargin
+                                info={'Prędkość'}
+                                data={'30 km/h'}
+                            />
+                            <RowData
+                                noMargin
+                                info={'Średnia prędkość'}
+                                data={'60 km/h'}
+                            />
+                            <RowData
+                                noMargin
+                                info={'Latitude'}
+                                data={
+                                    this.state.isRecording
+                                        ? this.state.currentLatitude
+                                        : '0.0'
+                                }
+                            />
+                            <RowData
+                                noMargin
+                                info={'Longitude'}
+                                data={
+                                    this.state.isRecording
+                                        ? this.state.currentLongitude
+                                        : '0.0'
+                                }
+                            />
                         </View>
                         <View style={{ flex: 2, alignContent: 'center' }}>
                             <Button
-                                buttonStyle={styles.button}
+                                buttonStyle={{
+                                    ...styles.button,
+                                    backgroundColor: this.state.isRecording
+                                        ? '#E80000'
+                                        : '#A7F500',
+                                }}
                                 title={
                                     this.state.isRecording ? 'Stop' : 'Start'
                                 }
@@ -204,6 +227,7 @@ class RecordingScreen extends React.Component {
                     </View>
                 </View>
                 <Modal
+                    title={'Podsumowanie'}
                     modalVisible={this.state.isModalVisible}
                     hideModal={() => this.setState({ isModalVisible: false })}
                 />
