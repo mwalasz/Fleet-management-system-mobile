@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import backHandler from '../../handlers/backHandler';
 import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -209,12 +210,25 @@ class RecordingScreen extends React.Component {
                         </View>
                         <View style={{ flex: 2, alignContent: 'center' }}>
                             <Button
+                                titleStyle={{ marginRight: 10 }}
                                 buttonStyle={{
                                     ...styles.button,
                                     backgroundColor: this.state.isRecording
                                         ? '#E80000'
                                         : '#A7F500',
                                 }}
+                                iconRight
+                                icon={
+                                    <Icon
+                                        name={
+                                            this.state.isRecording
+                                                ? 'check-circle-o'
+                                                : 'dot-circle-o'
+                                        }
+                                        size={15}
+                                        color="white"
+                                    />
+                                }
                                 title={
                                     this.state.isRecording ? 'Stop' : 'Start'
                                 }
