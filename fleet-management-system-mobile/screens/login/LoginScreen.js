@@ -15,17 +15,22 @@ import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
-    const [mail, onChangeMail] = React.useState('test');
+    const [mail, onChangeMail] = React.useState('test@test.pl');
     const [password, onChangePassword] = React.useState('test');
     const [isButtonActive, changeButtonActiveness] = React.useState(true);
 
     const checkIfCanLogin = () => {
-        changeButtonActiveness(mail.length > 0 && password.length > 0);
+        changeButtonActiveness(!(mail.length == 0 || password.length == 0));
+    };
+
+    const isMailWrong = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !re.test(email);
     };
 
     return (
         <KeyboardAvoidingView
-            keyboardVerticalOffset={Header.HEIGHT + 20}
+            keyboardVerticalOffset={Header.HEIGHT + 50}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
             style={styles.container}
         >
@@ -34,6 +39,7 @@ const LoginScreen = ({ navigation }) => {
                     <LogoImage />
                     <LoginFormInput
                         mail
+                        isError={isMailWrong(mail)}
                         value={mail}
                         onChangeText={(text) => {
                             onChangeMail(text);
@@ -47,7 +53,8 @@ const LoginScreen = ({ navigation }) => {
                             checkIfCanLogin();
                         }}
                     />
-                    <View style={styles.btnContainer}>
+
+                    <View style={styles.buttonContainer}>
                         <Button
                             containerStyle={styles.button}
                             title="Zaloguj się"
@@ -77,22 +84,12 @@ const styles = StyleSheet.create({
         padding: 40,
         flex: 1,
         justifyContent: 'space-around',
+        backgroundColor: '#fff',
     },
-    header: {
-        fontSize: 36,
-        marginBottom: 48,
-    },
-    textInput: {
-        height: 40,
-        borderColor: '#000000',
-        borderBottomWidth: 1,
-        marginBottom: 36,
-    },
-    btnContainer: {
+    buttonContainer: {
         backgroundColor: 'white',
-        marginTop: 42,
+        marginTop: 52,
     },
-    button: {},
 });
 
 export default LoginScreen;
