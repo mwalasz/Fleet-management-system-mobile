@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal as ModalNative, StyleSheet, View } from 'react-native';
-import Title from './Title';
-import RowData from './RowData';
-import ButtonsSection from './modal/ButtonsModalSection';
+import Title from '../Title';
+import RowData from '../RowData';
+import ButtonsSection from './ButtonsModalSection';
 
 const Modal = ({ modalVisible, hideModal, title, data, summary }) => {
     const renderRowsData = () => {

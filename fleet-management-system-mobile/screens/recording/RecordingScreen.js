@@ -6,7 +6,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { Dimensions } from 'react-native';
-import Modal from '../../components/Modal';
+import Modal from '../../components/modal/Modal';
 import RowData from '../../components/RowData';
 
 class RecordingScreen extends React.Component {

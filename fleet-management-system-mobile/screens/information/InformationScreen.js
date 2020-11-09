@@ -8,7 +8,7 @@ import RowData from '../../components/RowData';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Title from '../../components/Title';
 import { Dimensions } from 'react-native';
-import Modal from '../../components/Modal';
+import Modal from '../../components/modal/Modal';
 
 const InformationScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
