@@ -1,11 +1,10 @@
 import React from 'react';
 import { Modal as ModalNative, StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Title from './Title';
 import RowData from './RowData';
+import ButtonsSection from './modal/ButtonsModalSection';
 
-const Modal = ({ modalVisible, hideModal, title, data }) => {
+const Modal = ({ modalVisible, hideModal, title, data, summary }) => {
     const renderRowsData = () => {
         if (!data) {
             return <RowData />;
@@ -28,19 +27,10 @@ const Modal = ({ modalVisible, hideModal, title, data }) => {
                     <View style={styles.modalView}>
                         <Title border text={title} />
                         <View style={styles.data}>{renderRowsData()}</View>
-                        <Button
-                            title={'Zapisz dane'}
-                            titleStyle={{ marginRight: 10 }}
-                            iconRight
-                            icon={
-                                <Icon
-                                    name="check-circle"
-                                    size={15}
-                                    color="white"
-                                />
-                            }
-                            containerStyle={styles.button}
-                            onPress={hideModal}
+                        <ButtonsSection
+                            summary={summary}
+                            hideModal={hideModal}
+                            acceptAction={hideModal}
                         />
                     </View>
                 </View>

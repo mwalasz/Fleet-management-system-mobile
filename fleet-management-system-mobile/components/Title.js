@@ -3,7 +3,7 @@ import { Text, StyleSheet } from 'react-native';
 
 const Title = ({ border, text }) => {
     return (
-        <Text style={border ? styles.titleWithBorder : styles.title}>
+        <Text style={border ? [styles.title, styles.border] : styles.title}>
             {text}
         </Text>
     );
@@ -11,16 +11,15 @@ const Title = ({ border, text }) => {
 
 const styles = StyleSheet.create({
     title: {
-        fontWeight: 'bold',
         fontSize: 30,
+        fontWeight: 'bold',
+        alignSelf: 'center',
     },
-    titleWithBorder: {
+    border: {
         borderBottomWidth: 1,
         paddingBottom: 20,
         borderBottomColor: 'black',
         marginBottom: 15,
-        fontWeight: 'bold',
-        fontSize: 30,
     },
 });
 

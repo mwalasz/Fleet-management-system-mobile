@@ -228,6 +228,7 @@ class RecordingScreen extends React.Component {
                     </View>
                 </View>
                 <Modal
+                    summary
                     data={this.data()}
                     title={'Podsumowanie'}
                     modalVisible={this.state.isModalVisible}
