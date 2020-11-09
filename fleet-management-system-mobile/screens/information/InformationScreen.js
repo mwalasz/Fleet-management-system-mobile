@@ -13,6 +13,40 @@ import Modal from '../../components/Modal';
 const InformationScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
+    const userData = [
+        {
+            info: 'Ilość tras',
+            data: '4',
+        },
+        {
+            info: 'Łączny dystans',
+            data: '1234 km',
+        },
+        {
+            info: 'Średnia prędkość',
+            data: '85 km/h',
+        },
+    ];
+
+    const companyData = [
+        {
+            info: 'Adres',
+            data: 'Gliwice, Akademicka 16',
+        },
+        {
+            info: 'NIP',
+            data: '123 456 78 90',
+        },
+        {
+            info: 'Telefon',
+            data: '987 654 321',
+        },
+        {
+            info: 'Mail',
+            data: 'korporacjonex@poczta.pl',
+        },
+    ];
+
     return (
         <View style={styles.container}>
             <View style={styles.userInfoContainer}>
@@ -28,9 +62,9 @@ const InformationScreen = ({ navigation }) => {
             <View style={styles.statisticsContainer}>
                 <Title border text={'Twoje statystyki'} />
                 <View style={styles.data}>
-                    <RowData info={'Ilość tras'} data={'4'} />
-                    <RowData info={'Łączny dystans'} data={'1234 km'} />
-                    <RowData info={'Średnia prędkość'} data={'85 km/h'} />
+                    {userData.map((x) => {
+                        return <RowData info={x.info} data={x.data} />;
+                    })}
                 </View>
             </View>
             <View style={styles.button}>
@@ -46,6 +80,8 @@ const InformationScreen = ({ navigation }) => {
                 />
             </View>
             <Modal
+                data={companyData}
+                title={'Korporacjonex'}
                 modalVisible={modalVisible}
                 hideModal={() => setModalVisible(false)}
             />

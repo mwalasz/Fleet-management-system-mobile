@@ -3,8 +3,10 @@ import { Text, StyleSheet, View } from 'react-native';
 
 const RowData = ({ info, data, noMargin }) => (
     <View style={styles.container}>
-        <Text style={noMargin ? null : styles.text}>{`${info}:`}</Text>
-        <Text style={noMargin ? null : styles.text}>{data}</Text>
+        <Text style={noMargin ? null : styles.text}>
+            {info ? `${info}:` : ''}
+        </Text>
+        <Text style={noMargin ? null : styles.text}>{data ?? ''}</Text>
     </View>
 );
 

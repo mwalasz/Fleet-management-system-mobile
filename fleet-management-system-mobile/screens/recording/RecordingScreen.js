@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Text, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import backHandler from '../../handlers/backHandler';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -28,8 +27,28 @@ class RecordingScreen extends React.Component {
         };
     }
 
+    data = () => {
+        return [
+            {
+                info: 'Dystans',
+                data: '40 km',
+            },
+            {
+                info: 'Czas',
+                data: '20 min',
+            },
+            {
+                info: 'Prędkość',
+                data: '90 km/h',
+            },
+            {
+                info: 'Średnia prędkość',
+                data: '80 km/h',
+            },
+        ];
+    };
+
     validatePermissions = async () => {
-        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
         let { status } = await Permissions.getAsync(Permissions.LOCATION);
 
         console.log('status');
@@ -59,8 +78,6 @@ class RecordingScreen extends React.Component {
                     timeInterval: 1000,
                 },
                 (newLocation) => {
-                    // console.log('newLocation');
-                    // console.log(newLocation);
                     let { latitude, longitude } = newLocation.coords;
 
                     this.setState({
@@ -97,8 +114,6 @@ class RecordingScreen extends React.Component {
 
         this.setState({ error: 'Error while ending location tracking!' });
     };
-
-    /////////////////////////////////////////////////////////////////////
 
     userLocationChanged(event) {
         const newRegion = event.nativeEvent.coordinate;
@@ -149,32 +164,18 @@ class RecordingScreen extends React.Component {
                         showsUserLocation={true}
                         showsMyLocationButton={true}
                         provider={PROVIDER_GOOGLE}
-                        // onRegionChange={(event) => this.regionChanged(event)}
                         onUserLocationChange={(event) => {
                             this.regionChanged(event);
                             this.userLocationChanged(event);
                         }}
                     />
                 </View>
-                <View style={styles.locationTextContainer}>
-                    <Text style={styles.locationText}>
+                <View style={styles.bottomModal}>
+                    <Text style={styles.bottomModalTitle}>
                         {'Zacznij nagrywać podróż:'}
                     </Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-around',
-                            alignContent: 'center',
-                        }}
-                    >
-                        <View
-                            style={{
-                                flex: 3,
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                            }}
-                        >
+                    <View style={styles.bottomModalDataAndButton}>
+                        <View style={styles.dataSection}>
                             <RowData noMargin info={'Dystans'} data={'10km'} />
                             <RowData noMargin info={'Czas'} data={'10km'} />
                             <RowData
@@ -227,6 +228,7 @@ class RecordingScreen extends React.Component {
                     </View>
                 </View>
                 <Modal
+                    data={this.data()}
                     title={'Podsumowanie'}
                     modalVisible={this.state.isModalVisible}
                     hideModal={() => this.setState({ isModalVisible: false })}
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
         width: Math.round(Dimensions.get('window').width),
         elevation: -100,
     },
-    locationTextContainer: {
+    bottomModal: {
         backgroundColor: '#fff',
         elevation: 3,
         position: 'absolute',
@@ -257,18 +259,29 @@ const styles = StyleSheet.create({
         paddingLeft: 25,
         paddingBottom: 20,
         paddingTop: 10,
-        top: Math.round(Dimensions.get('window').height) - 235,
+        top: Math.round(Dimensions.get('window').height) - 245,
         width: Math.round(Dimensions.get('window').width) - 50,
-        height: 150,
+        height: 160,
         borderRadius: 40,
         textAlign: 'center',
         justifyContent: 'space-around',
         elevation: 3,
     },
-    locationText: {
+    bottomModalTitle: {
         fontWeight: 'bold',
         alignSelf: 'center',
-        marginBottom: 10,
+        marginBottom: 15,
+    },
+    dataSection: {
+        flex: 3,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    bottomModalDataAndButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        alignContent: 'center',
     },
 });
 

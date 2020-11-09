@@ -6,6 +6,16 @@ import Title from './Title';
 import RowData from './RowData';
 
 const Modal = ({ modalVisible, hideModal, title, data }) => {
+    const renderRowsData = () => {
+        if (!data) {
+            return <RowData />;
+        }
+
+        return data.map((x) => {
+            return <RowData info={x.info} data={x.data} />;
+        });
+    };
+
     return (
         <View style={styles.centeredView}>
             <ModalNative
@@ -17,18 +27,7 @@ const Modal = ({ modalVisible, hideModal, title, data }) => {
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Title border text={title} />
-                        <View style={styles.data}>
-                            <RowData
-                                info={'Adres'}
-                                data={'Gliwice, Akademicka 16'}
-                            />
-                            <RowData info={'NIP'} data={'123456789'} />
-                            <RowData
-                                info={'Mail'}
-                                data={'korporacjonex@pam.pl'}
-                            />
-                            <RowData info={'Telefon'} data={'987-654-321'} />
-                        </View>
+                        <View style={styles.data}>{renderRowsData()}</View>
                         <Button
                             title={'Zapisz dane'}
                             titleStyle={{ marginRight: 10 }}
@@ -40,7 +39,7 @@ const Modal = ({ modalVisible, hideModal, title, data }) => {
                                     color="white"
                                 />
                             }
-                            containerStyle={{ alignSelf: 'stretch' }}
+                            containerStyle={styles.button}
                             onPress={hideModal}
                         />
                     </View>
@@ -61,12 +60,11 @@ const styles = StyleSheet.create({
         marginVertical: 20,
     },
     modalView: {
-        margin: 30,
         backgroundColor: 'white',
         borderRadius: 20,
         paddingHorizontal: 50,
         paddingVertical: 40,
-        alignItems: 'center',
+        alignItems: 'stretch',
         shadowColor: '#000',
         shadowOffset: {
             width: 10,
@@ -75,6 +73,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    button: {
+        alignSelf: 'stretch',
     },
 });
 
