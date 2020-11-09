@@ -4,11 +4,11 @@ import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
 import { defaultUserPath } from '../../utils/constans';
-import RowData from './components/RowData';
+import RowData from '../../components/RowData';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CompanyModal from './components/CompanyModal';
 import Title from '../../components/Title';
 import { Dimensions } from 'react-native';
+import Modal from '../../components/Modal';
 
 const InformationScreen = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -45,9 +45,9 @@ const InformationScreen = ({ navigation }) => {
                     }}
                 />
             </View>
-            <CompanyModal
+            <Modal
                 modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
+                hideModal={() => setModalVisible(false)}
             />
         </View>
     );

@@ -7,6 +7,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { Dimensions } from 'react-native';
+import Modal from '../../components/Modal';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class RecordingScreen extends React.Component {
             error: '',
             isRecording: false,
             currentRegion: null,
+            isModalVisible: false,
         };
     }
 
@@ -89,7 +91,10 @@ class RecordingScreen extends React.Component {
         if (this.state.isRecording && this.locationObj !== null) {
             this.locationObj.remove();
             this.setState({ isRecording: false });
+            this.setState({ isModalVisible: true });
         }
+
+        this.setState({ error: 'Error while ending location tracking!' });
     };
 
     /////////////////////////////////////////////////////////////////////
@@ -198,6 +203,10 @@ class RecordingScreen extends React.Component {
                         </View>
                     </View>
                 </View>
+                <Modal
+                    modalVisible={this.state.isModalVisible}
+                    hideModal={() => this.setState({ isModalVisible: false })}
+                />
             </View>
         );
     }

@@ -1,21 +1,18 @@
 import React from 'react';
-import { Modal, StyleSheet, Text, View } from 'react-native';
+import { Modal as ModalNative, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Title from '../../../components/Title';
+import Title from './Title';
 import RowData from './RowData';
 
-const CompanyModal = ({ modalVisible, setModalVisible }) => {
+const Modal = ({ modalVisible, hideModal }) => {
     return (
         <View style={styles.centeredView}>
-            <Modal
+            <ModalNative
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {
-                    console.log('Modal has been closed.');
-                    setModalVisible(false);
-                }}
+                onRequestClose={hideModal}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -33,7 +30,7 @@ const CompanyModal = ({ modalVisible, setModalVisible }) => {
                             <RowData info={'Telefon'} data={'987-654-321'} />
                         </View>
                         <Button
-                            title={'Gotowe'}
+                            title={'Zapisz dane'}
                             titleStyle={{ marginRight: 10 }}
                             iconRight
                             icon={
@@ -44,13 +41,11 @@ const CompanyModal = ({ modalVisible, setModalVisible }) => {
                                 />
                             }
                             containerStyle={{ alignSelf: 'stretch' }}
-                            onPress={() => {
-                                setModalVisible(false);
-                            }}
+                            onPress={hideModal}
                         />
                     </View>
                 </View>
-            </Modal>
+            </ModalNative>
         </View>
     );
 };
@@ -83,4 +78,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CompanyModal;
+export default Modal;
