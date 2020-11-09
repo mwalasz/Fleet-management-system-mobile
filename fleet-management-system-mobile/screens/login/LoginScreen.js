@@ -53,7 +53,9 @@ const LoginScreen = ({ navigation }) => {
                             title="Zaloguj się"
                             titleStyle={{ marginRight: 10 }}
                             iconRight
-                            icon={<Icon name="user" size={15} color="white" />}
+                            icon={
+                                <Icon name="sign-in" size={15} color="white" />
+                            }
                             disabled={!isButtonActive}
                             onPress={() =>
                                 navigation.navigate(screenInfo.home.name)
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginTop: 42,
     },
+    button: {},
 });
 
 export default LoginScreen;

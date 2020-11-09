@@ -1,6 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, Text, View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const FloatingButton = ({ theme, disabled, onClick }) => {
     const gray = theme.colors.gray;
@@ -9,19 +11,19 @@ const FloatingButton = ({ theme, disabled, onClick }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                style={{
-                    ...styles.button,
-                    backgroundColor: disabled ? red : green,
-                }}
+            <Button
+                buttonStyle={styles.button}
+                containerStyle={styles.button}
+                icon={
+                    <Icon
+                        name={disabled ? 'exclamation-triangle' : 'car'}
+                        size={15}
+                        color="white"
+                    />
+                }
                 disabled={disabled}
                 onPress={onClick}
-            >
-                <Image
-                    source={require('../assets/start.png')}
-                    style={styles.image}
-                />
-            </TouchableOpacity>
+            />
         </View>
     );
 };
@@ -36,18 +38,12 @@ const styles = StyleSheet.create({
     button: {
         margin: 10,
         padding: 20,
-        borderRadius: 400,
+        borderRadius: 40,
         height: 70,
         width: 70,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 2,
-        borderColor: '#000',
-    },
-    image: {
-        height: 35,
-        width: 35,
     },
 });
 
