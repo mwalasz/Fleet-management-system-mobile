@@ -9,6 +9,12 @@ import * as Permissions from 'expo-permissions';
 import { Dimensions } from 'react-native';
 import Modal from '../../components/modal/Modal';
 import RowData from '../../components/RowData';
+import {
+    calcMaxSpeed,
+    calcRouteDistance,
+    calcAverageSpeed,
+    calcRouteDuration,
+} from './utils/calculations';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
@@ -20,11 +26,18 @@ class RecordingScreen extends React.Component {
         this.state = {
             currentLatitude: null,
             currentLongitude: '',
+            currentSpeed: 0,
             locationHistory: [],
             error: '',
             isRecording: false,
             currentRegion: null,
             isModalVisible: false,
+            startTime: null,
+            endTime: null,
+            distance: 0,
+            maxSpeed: 0,
+            averageSpeed: 0,
+            duration: 0,
         };
     }
 
@@ -72,6 +85,9 @@ class RecordingScreen extends React.Component {
 
     start = async () => {
         if (await this.validatePermissions()) {
+            const startTime = new Date();
+            this.setState({ startTime });
+
             this.locationObj = await Location.watchPositionAsync(
                 {
                     accuracy: Location.LocationAccuracy.High,
@@ -79,20 +95,25 @@ class RecordingScreen extends React.Component {
                     timeInterval: 1000,
                 },
                 (newLocation) => {
-                    let { latitude, longitude } = newLocation.coords;
+                    let { latitude, longitude, speed } = newLocation.coords;
+                    let convertedSpeed = parseFloat(speed / 3.6).toFixed(1);
 
-                    this.setState({
+                    this.setState((prevState) => ({
                         currentLatitude: latitude,
                         currentLongitude: longitude,
-                    });
-                    this.setState((prevState) => ({
+                        currentSpeed: convertedSpeed,
                         locationHistory: [
                             ...prevState.locationHistory,
                             {
-                                currentLatitude: latitude,
-                                currentLongitude: longitude,
+                                latitude,
+                                longitude,
                             },
                         ],
+                        maxSpeed: parseFloat(
+                            prevState.maxSpeed < convertedSpeed
+                                ? convertedSpeed
+                                : prevState.maxSpeed
+                        ).toFixed(1),
                     }));
                 }
             );
@@ -106,11 +127,36 @@ class RecordingScreen extends React.Component {
         this.setState({ isRecording: true });
     };
 
+    calculateAndSaveRouteData = (startTime, endTime) => {
+        const duration = calcRouteDuration(startTime, endTime);
+        const distance = calcRouteDistance(this.state.locationHistory);
+        const avgSpeed = calcAverageSpeed(distance, duration);
+
+        this.setState({
+            averageSpeed: avgSpeed,
+            distance: distance,
+            duration: duration,
+        });
+    };
+
     stopRecording = async () => {
         if (this.state.isRecording && this.locationObj !== null) {
+            const endTime = new Date();
             this.locationObj.remove();
-            this.setState({ isRecording: false });
-            this.setState({ isModalVisible: true });
+            console.log('endTime');
+            console.log(endTime);
+            console.log('this.state.startTime');
+            console.log(this.state.startTime);
+            this.calculateAndSaveRouteData(this.state.startTime, endTime);
+
+            this.setState(
+                {
+                    isModalVisible: true,
+                    isRecording: false,
+                    endTime: endTime,
+                },
+                () => console.log(this.state)
+            );
         }
 
         this.setState({ error: 'Error while ending location tracking!' });
@@ -182,7 +228,7 @@ class RecordingScreen extends React.Component {
                             <RowData
                                 noMargin
                                 info={'Prędkość'}
-                                data={'30 km/h'}
+                                data={`${this.state.currentSpeed} km/h`}
                             />
                             <RowData
                                 noMargin
