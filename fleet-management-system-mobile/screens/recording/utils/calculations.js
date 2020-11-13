@@ -12,7 +12,7 @@ export const calcRouteDistance = (arrOfCoords) => {
                 );
 
                 if (++processedCoords >= numberOfCoords)
-                    return roundToThreePlaces(overallDistance);
+                    return roundTo(2, overallDistance);
             }
         } else {
             console.log('Not enough data to process!');
@@ -21,7 +21,7 @@ export const calcRouteDistance = (arrOfCoords) => {
     }
 };
 
-//Returns distances between two coordinates in kilometers.
+//Returns distances between two coordinates in meters.
 const calcDistanceBetweenCoordinates = (coordFrom, coordTo) => {
     const { latitude: lat1, longitude: lon1 } = coordFrom;
     const { latitude: lat2, longitude: lon2 } = coordTo;
@@ -32,7 +32,7 @@ const calcDistanceBetweenCoordinates = (coordFrom, coordTo) => {
         c((lat2 - lat1) * p) / 2 +
         (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
 
-    return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+    return 12742 * Math.asin(Math.sqrt(a)) * 1000; // 2 * R; R = 6371 km
 };
 
 //Returns max speed in kmph.
@@ -41,16 +41,18 @@ export const calcMaxSpeed = (maxSpeed, speedToCheck) => {
     if (speedToCheck && maxSpeed) {
         speed = (speed * 1000) / 3600; //translate from m/s to km/h
 
-        return roundToThreePlaces(speed >= maxSpeed ? speed : maxSpeed);
+        return roundTo(2, speed >= maxSpeed ? speed : maxSpeed);
     }
     return 0;
 };
 
+//Returns average speed in kmph.
 export const calcAverageSpeed = (distance, duration) => {
     if (distance && duration) {
+        const distanceKm = distance / 1000;
         const durationH = duration / (60 * 60);
 
-        return roundToThreePlaces(distance / durationH);
+        return roundTo(2, distanceKm / durationH);
     }
 };
 
@@ -58,6 +60,9 @@ export const calcAverageSpeed = (distance, duration) => {
 export const calcRouteDuration = (startTime, endTime) => {
     return parseInt(Math.abs(new Date(endTime) - new Date(startTime)) / 1000);
 };
-const roundToThreePlaces = (number) => {
-    return parseFloat(number).toFixed(3);
+
+export const roundTo = (numOfPlaces, numberToRound) => {
+    return numOfPlaces !== 0
+        ? parseFloat(numberToRound).toFixed(numOfPlaces)
+        : parseFloat(numberToRound);
 };

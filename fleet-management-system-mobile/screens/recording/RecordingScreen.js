@@ -15,6 +15,12 @@ import {
     calcAverageSpeed,
     calcRouteDuration,
 } from './utils/calculations';
+import {
+    formatTimeData,
+    formatDate,
+    formatDistance,
+    formatSpeed,
+} from './utils/formating';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
@@ -26,7 +32,7 @@ class RecordingScreen extends React.Component {
         this.timer = null;
         this.state = {
             currentLatitude: null,
-            currentLongitude: '',
+            currentLongitude: null,
             currentSpeed: 0,
             locationHistory: [],
             error: '',
@@ -39,27 +45,34 @@ class RecordingScreen extends React.Component {
             maxSpeed: 0,
             averageSpeed: 0,
             duration: 0,
-            timerTimeElapsed: 0,
         };
     }
 
-    data = () => {
+    getDataForModal = () => {
         return [
             {
-                info: 'Dystans',
-                data: '40 km',
+                info: 'Rozpoczęcie',
+                data: formatDate(this.state.startTime),
             },
             {
-                info: 'Czas',
-                data: '20 min',
+                info: 'Zakończenie',
+                data: formatDate(this.state.endTime),
             },
             {
-                info: 'Prędkość',
-                data: '90 km/h',
+                info: 'Długość trwania',
+                data: formatTimeData(this.state.duration),
+            },
+            {
+                info: 'Całkowity dystans',
+                data: formatDistance(this.state.distance),
+            },
+            {
+                info: 'Maksymalna prędkość',
+                data: formatSpeed(this.state.maxSpeed),
             },
             {
                 info: 'Średnia prędkość',
-                data: '80 km/h',
+                data: formatSpeed(this.state.averageSpeed),
             },
         ];
     };
@@ -125,35 +138,17 @@ class RecordingScreen extends React.Component {
     };
 
     startTimer = () => {
-        this.setState({ timerTimeElapsed: 0 });
+        this.setState({ duration: 0 });
         clearInterval(this.timer);
         this.timer = setInterval(() => {
             this.setState((prevState) => {
-                return { timerTimeElapsed: prevState.timerTimeElapsed + 1 };
+                return { duration: prevState.duration + 1 };
             });
         }, 1000);
     };
 
     stopTimer = () => {
         clearInterval(this.timer);
-    };
-
-    formatTimerData = (time) => {
-        if (time < 60) {
-            return `${time} s`;
-        } else if (time >= 60 && time < 3600) {
-            const s = time % 60;
-            const m = parseInt((time - s) / 60);
-
-            return `${m}min, ${s}s`;
-        } else {
-            const minSecs = time % 3600;
-            const h = (time - minSecs) / 3600;
-            const s = time % 60;
-            const m = (minSecs - s) / 60;
-
-            return `${h}h, ${m}min, ${s}s`;
-        }
     };
 
     startRecording = async () => {
@@ -163,7 +158,7 @@ class RecordingScreen extends React.Component {
     };
 
     calculateAndSaveRouteData = () => {
-        const duration = this.state.timerTimeElapsed;
+        const duration = this.state.duration;
         const distance = calcRouteDistance(this.state.locationHistory);
         const avgSpeed = calcAverageSpeed(distance, duration);
 
@@ -229,6 +224,22 @@ class RecordingScreen extends React.Component {
         };
     }
 
+    resetData = () => {
+        this.setState({
+            currentLatitude: null,
+            currentLongitude: null,
+            currentSpeed: 0,
+            locationHistory: [],
+            error: '',
+            startTime: null,
+            endTime: null,
+            distance: 0,
+            maxSpeed: 0,
+            averageSpeed: 0,
+            duration: 0,
+        });
+    };
+
     render() {
         return (
             <View styles={styles.container}>
@@ -257,25 +268,22 @@ class RecordingScreen extends React.Component {
                     </Text>
                     <View style={styles.bottomModalDataAndButton}>
                         <View style={styles.dataSection}>
-                            <RowData noMargin info={'Dystans'} data={'10km'} />
                             <RowData
                                 noMargin
                                 info={'Czas'}
-                                data={this.formatTimerData(
-                                    this.state.timerTimeElapsed
-                                )}
+                                data={formatTimeData(this.state.duration)}
                             />
                             <RowData
                                 noMargin
                                 info={'Prędkość'}
-                                data={`${this.state.currentSpeed} km/h`}
+                                data={formatSpeed(this.state.currentSpeed)}
                             />
                             <RowData
                                 noMargin
                                 info={'Szer. geog.'}
                                 data={
                                     this.state.isRecording
-                                        ? this.state.currentLatitude
+                                        ? this.state.currentLatitude || '0.0'
                                         : '0.0'
                                 }
                             />
@@ -284,7 +292,7 @@ class RecordingScreen extends React.Component {
                                 info={'Dł. geog.'}
                                 data={
                                     this.state.isRecording
-                                        ? this.state.currentLongitude
+                                        ? this.state.currentLongitude || '0.0'
                                         : '0.0'
                                 }
                             />
@@ -324,10 +332,13 @@ class RecordingScreen extends React.Component {
                 </View>
                 <Modal
                     summary
-                    data={this.data()}
+                    data={this.getDataForModal()}
                     title={'Podsumowanie'}
                     modalVisible={this.state.isModalVisible}
-                    hideModal={() => this.setState({ isModalVisible: false })}
+                    hideModal={() => {
+                        this.setState({ isModalVisible: false });
+                        this.resetData();
+                    }}
                 />
             </View>
         );
