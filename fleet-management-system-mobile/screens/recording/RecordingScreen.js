@@ -23,6 +23,7 @@ class RecordingScreen extends React.Component {
         this.locationObj = null;
         this.mapRef = null;
         this.region = null;
+        this.timer = null;
         this.state = {
             currentLatitude: null,
             currentLongitude: '',
@@ -38,6 +39,7 @@ class RecordingScreen extends React.Component {
             maxSpeed: 0,
             averageSpeed: 0,
             duration: 0,
+            timerTimeElapsed: 0,
         };
     }
 
@@ -122,13 +124,46 @@ class RecordingScreen extends React.Component {
         this.setState({ error: 'No permission granted!' });
     };
 
+    startTimer = () => {
+        this.setState({ timerTimeElapsed: 0 });
+        clearInterval(this.timer);
+        this.timer = setInterval(() => {
+            this.setState((prevState) => {
+                return { timerTimeElapsed: prevState.timerTimeElapsed + 1 };
+            });
+        }, 1000);
+    };
+
+    stopTimer = () => {
+        clearInterval(this.timer);
+    };
+
+    formatTimerData = (time) => {
+        if (time < 60) {
+            return `${time} s`;
+        } else if (time >= 60 && time < 3600) {
+            const s = time % 60;
+            const m = parseInt((time - s) / 60);
+
+            return `${m}min, ${s}s`;
+        } else {
+            const minSecs = time % 3600;
+            const h = (time - minSecs) / 3600;
+            const s = time % 60;
+            const m = (minSecs - s) / 60;
+
+            return `${h}h, ${m}min, ${s}s`;
+        }
+    };
+
     startRecording = async () => {
         await this.start();
+        this.startTimer();
         this.setState({ isRecording: true });
     };
 
-    calculateAndSaveRouteData = (startTime, endTime) => {
-        const duration = calcRouteDuration(startTime, endTime);
+    calculateAndSaveRouteData = () => {
+        const duration = this.state.timerTimeElapsed;
         const distance = calcRouteDistance(this.state.locationHistory);
         const avgSpeed = calcAverageSpeed(distance, duration);
 
@@ -142,12 +177,9 @@ class RecordingScreen extends React.Component {
     stopRecording = async () => {
         if (this.state.isRecording && this.locationObj !== null) {
             const endTime = new Date();
+            this.stopTimer();
             this.locationObj.remove();
-            console.log('endTime');
-            console.log(endTime);
-            console.log('this.state.startTime');
-            console.log(this.state.startTime);
-            this.calculateAndSaveRouteData(this.state.startTime, endTime);
+            this.calculateAndSaveRouteData();
 
             this.setState(
                 {
@@ -219,12 +251,20 @@ class RecordingScreen extends React.Component {
                 </View>
                 <View style={styles.bottomModal}>
                     <Text style={styles.bottomModalTitle}>
-                        {'Zacznij nagrywać podróż:'}
+                        {this.state.isRecording
+                            ? 'Trwa podróż...'
+                            : 'Zacznij nagrywać podróż:'}
                     </Text>
                     <View style={styles.bottomModalDataAndButton}>
                         <View style={styles.dataSection}>
                             <RowData noMargin info={'Dystans'} data={'10km'} />
-                            <RowData noMargin info={'Czas'} data={'10km'} />
+                            <RowData
+                                noMargin
+                                info={'Czas'}
+                                data={this.formatTimerData(
+                                    this.state.timerTimeElapsed
+                                )}
+                            />
                             <RowData
                                 noMargin
                                 info={'Prędkość'}
@@ -232,12 +272,7 @@ class RecordingScreen extends React.Component {
                             />
                             <RowData
                                 noMargin
-                                info={'Średnia prędkość'}
-                                data={'60 km/h'}
-                            />
-                            <RowData
-                                noMargin
-                                info={'Latitude'}
+                                info={'Szer. geog.'}
                                 data={
                                     this.state.isRecording
                                         ? this.state.currentLatitude
@@ -246,7 +281,7 @@ class RecordingScreen extends React.Component {
                             />
                             <RowData
                                 noMargin
-                                info={'Longitude'}
+                                info={'Dł. geog.'}
                                 data={
                                     this.state.isRecording
                                         ? this.state.currentLongitude
