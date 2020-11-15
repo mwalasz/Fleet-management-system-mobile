@@ -10,37 +10,26 @@ import Title from '../../components/Title';
 import { Dimensions } from 'react-native';
 import Modal from '../../components/modal/Modal';
 import { connect } from 'react-redux';
-import { getDriverStatistics } from '../../utils/endpoints';
-import { userStatisticsData } from '../../utils/createDataForModal';
+import {
+    getDriverStatistics,
+    getDriverCompanyInfo,
+} from '../../utils/endpoints';
+import {
+    userStatisticsData,
+    userCompanyInformations,
+} from '../../utils/createDataForModal';
 
 const InformationScreen = ({ navigation, user }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [userApiData, setUserApiData] = useState({});
+    const [driverStatistics, setDriverStatistics] = useState({});
+    const [companyInfo, setCompanyInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
-    const companyData = [
-        {
-            info: 'Adres',
-            data: 'Gliwice, Akademicka 16',
-        },
-        {
-            info: 'NIP',
-            data: '123 456 78 90',
-        },
-        {
-            info: 'Telefon',
-            data: '987 654 321',
-        },
-        {
-            info: 'Mail',
-            data: 'korporacjonex@poczta.pl',
-        },
-    ];
-
     useEffect(() => {
-        console.log('use effect fired');
         setIsLoading(true);
-        getDriverStatistics(user, setUserApiData);
+        getDriverStatistics(user, setDriverStatistics);
+        getDriverCompanyInfo(user, setCompanyInfo);
+        setIsLoading(false);
     }, []);
 
     return (
@@ -51,14 +40,18 @@ const InformationScreen = ({ navigation, user }) => {
                 </View>
                 <TextCard
                     big
-                    title={'Anna Kowalska'}
-                    content={'Nr prawa jazdy: erifunfqohudvn'}
+                    title={`${user.firstName || 'Imię'} ${
+                        user.lastName || 'Nazwisko'
+                    }`}
+                    content={`Nr prawa jazdy: ${
+                        driverStatistics.licenseNumber || 'brak'
+                    }`}
                 />
             </View>
             <View style={styles.statisticsContainer}>
                 <Title border text={'Twoje statystyki'} />
                 <View style={styles.data}>
-                    {userStatisticsData(userApiData).map((x) => {
+                    {userStatisticsData(driverStatistics).map((x) => {
                         return <RowData info={x.info} data={x.data} />;
                     })}
                 </View>
@@ -70,18 +63,19 @@ const InformationScreen = ({ navigation, user }) => {
                     iconRight
                     icon={<Icon name="info-circle" size={15} color="white" />}
                     containerStyle={{ alignSelf: 'stretch' }}
-                    onPress={() => {
-                        console.log(userApiData);
-                    }}
-                    isLoading={isLoading}
                     // onPress={() => {
-                    //     setModalVisible(true);
+                    //     console.log(driverStatistics);
+                    //     console.log(companyInfo);
                     // }}
+                    loading={isLoading}
+                    onPress={() => {
+                        setModalVisible(true);
+                    }}
                 />
             </View>
             <Modal
-                data={companyData}
-                title={'Korporacjonex'}
+                data={userCompanyInformations(companyInfo)}
+                title={companyInfo.companyName ?? 'Nazwa firmy'}
                 modalVisible={modalVisible}
                 hideModal={() => setModalVisible(false)}
             />
@@ -120,7 +114,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         bottom: 20,
         width: Math.round(Dimensions.get('window').width) - 40,
-        // right: 0,
     },
 });
 
