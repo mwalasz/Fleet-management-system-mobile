@@ -6,6 +6,7 @@ import {
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
+    Text,
 } from 'react-native';
 import LogoImage from '../../components/LogoImage';
 import LoginFormInput from './components/LoginFormInput';
@@ -13,10 +14,19 @@ import { screenInfo } from '../../utils/constans';
 import { Header } from '@react-navigation/stack';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+import { loginUser } from '../../redux/actions/authorization_actions';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({
+    navigation,
+    isLoggingIn,
+    isAuthenticated,
+    dispatch,
+    loginError,
+    wrongRole,
+}) => {
     const [mail, onChangeMail] = React.useState('test@test.pl');
-    const [password, onChangePassword] = React.useState('test');
+    const [password, onChangePassword] = React.useState('admin');
     const [isButtonActive, changeButtonActiveness] = React.useState(true);
 
     const checkIfCanLogin = () => {
@@ -26,6 +36,14 @@ const LoginScreen = ({ navigation }) => {
     const isMailWrong = (email) => {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return !re.test(email);
+    };
+
+    const handleSubmit = () => {
+        dispatch(loginUser(mail, password));
+
+        if (isAuthenticated) {
+            navigation.navigate(screenInfo.home.name);
+        }
     };
 
     return (
@@ -55,6 +73,16 @@ const LoginScreen = ({ navigation }) => {
                     />
 
                     <View style={styles.buttonContainer}>
+                        {loginError &&
+                            (wrongRole ? (
+                                <Text style={styles.errorText}>
+                                    Nie masz odpowiednich uprawnień!
+                                </Text>
+                            ) : (
+                                <Text style={styles.errorText}>
+                                    Błąd w trakcie logowania, spróbuj ponownie..
+                                </Text>
+                            ))}
                         <Button
                             containerStyle={styles.button}
                             title="Zaloguj się"
@@ -64,10 +92,12 @@ const LoginScreen = ({ navigation }) => {
                                 <Icon name="sign-in" size={15} color="white" />
                             }
                             disabled={!isButtonActive}
-                            onPress={() =>
-                                navigation.navigate(screenInfo.home.name)
+                            onPress={
+                                handleSubmit
+                                // () => loginUser(mail, password)
+                                // navigation.navigate(screenInfo.home.name)
                             }
-                            loading={!isButtonActive}
+                            loading={isLoggingIn}
                         />
                     </View>
                 </View>
@@ -90,6 +120,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginTop: 52,
     },
+    errorText: {
+        marginBottom: 10,
+        alignSelf: 'center',
+        fontWeight: '600',
+        color: 'red',
+    },
 });
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+    return {
+        isLoggingIn: state.isLoggingIn,
+        loginError: state.loginError,
+        isAuthenticated: state.isAuthenticated,
+        wrongRole: state.wrongRole,
+    };
+};
+export default connect(mapStateToProps)(LoginScreen);
