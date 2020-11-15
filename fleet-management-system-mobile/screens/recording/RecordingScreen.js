@@ -14,13 +14,13 @@ import {
     calcRouteDistance,
     calcAverageSpeed,
     calcRouteDuration,
-} from './utils/calculations';
+} from '../../utils/calculations';
 import {
     formatTimeData,
     formatDate,
     formatDistance,
     formatSpeed,
-} from './utils/formating';
+} from '../../utils/formating';
 
 class RecordingScreen extends React.Component {
     constructor(props) {

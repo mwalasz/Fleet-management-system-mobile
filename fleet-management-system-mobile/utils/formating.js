@@ -32,7 +32,7 @@ export const formatDistance = (distance) => {
         if (distance < 1000) {
             return `${roundTo(0, distance)} m`;
         } else {
-            return `${roundTo(0, distance)} km`;
+            return `${roundTo(1, distance / 1000)} km`;
         }
     }
 
@@ -40,5 +40,5 @@ export const formatDistance = (distance) => {
 };
 
 export const formatSpeed = (speed) => {
-    return speed != null ? `${speed} km/h` : 'Błąd!';
+    return speed != null ? `${roundTo(1, speed)} km/h` : 'Błąd!';
 };
