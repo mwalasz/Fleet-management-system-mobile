@@ -24,6 +24,7 @@ const LoginScreen = ({
     dispatch,
     loginError,
     wrongRole,
+    userName,
 }) => {
     const [mail, onChangeMail] = React.useState('test@test.pl');
     const [password, onChangePassword] = React.useState('admin');
@@ -85,18 +86,26 @@ const LoginScreen = ({
                             ))}
                         <Button
                             containerStyle={styles.button}
-                            title="Zaloguj się"
+                            title={
+                                isAuthenticated
+                                    ? `Witaj ${userName}`
+                                    : 'Zaloguj się'
+                            }
                             titleStyle={{ marginRight: 10 }}
                             iconRight
                             icon={
-                                <Icon name="sign-in" size={15} color="white" />
+                                <Icon
+                                    name={
+                                        isAuthenticated
+                                            ? 'check-circle'
+                                            : 'sign-in'
+                                    }
+                                    size={15}
+                                    color="white"
+                                />
                             }
                             disabled={!isButtonActive}
-                            onPress={
-                                handleSubmit
-                                // () => loginUser(mail, password)
-                                // navigation.navigate(screenInfo.home.name)
-                            }
+                            onPress={handleSubmit}
                             loading={isLoggingIn}
                         />
                     </View>
@@ -134,6 +143,7 @@ const mapStateToProps = (state) => {
         loginError: state.loginError,
         isAuthenticated: state.isAuthenticated,
         wrongRole: state.wrongRole,
+        userName: state.user.firstName,
     };
 };
 export default connect(mapStateToProps)(LoginScreen);
