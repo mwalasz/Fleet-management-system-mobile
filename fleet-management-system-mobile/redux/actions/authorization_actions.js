@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL } from '../../utils/constans';
+import { API_URL, screenInfo } from '../../utils/constans';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -14,9 +14,7 @@ export const VERIFY_USER = 'VERIFY_USER';
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
 export const VERIFY_ERROR = 'VERIFY_ERROR';
 
-const tokenName = 'auth_token';
-
-export const loginUser = (mail, password) => (dispatch) => {
+export const loginUser = (mail, password, navigation) => (dispatch) => {
     dispatch(requestLogin());
     axios
         .post(
@@ -29,18 +27,13 @@ export const loginUser = (mail, password) => (dispatch) => {
         )
         .then((res) => {
             const user = res.data.result;
-            // setCookie(tokenName, user.token, 1);
-            console.log(mail);
-            console.log(password);
             if (user.role === 'driver') {
-                dispatch(receiveLogin(user));
+                dispatch(receiveLogin(user, navigation));
             } else {
                 dispatch(loginWrongRole());
             }
         })
         .catch((error) => {
-            console.log(mail);
-            console.log(password);
             console.log(`Error while user's attempt to log in: ${error}`);
             dispatch(loginError());
         });
@@ -48,15 +41,11 @@ export const loginUser = (mail, password) => (dispatch) => {
 
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout());
-    // removeCookie(tokenName);
     dispatch(receiveLogout());
 };
 
 export const verifyAuth = () => (dispatch) => {
     dispatch(verifyUser());
-    // const token = getCookie(tokenName);
-    console.log(tokenName);
-    console.log(token);
     axios
         .post(`${API_URL}/authentication/verify_token`, {
             token: token,
@@ -81,7 +70,8 @@ const requestLogin = () => {
     };
 };
 
-const receiveLogin = (user) => {
+const receiveLogin = (user, navigation) => {
+    navigation.navigate(screenInfo.home.name);
     return {
         type: LOGIN_SUCCESS,
         user,

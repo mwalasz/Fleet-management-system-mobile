@@ -4,11 +4,23 @@ import { Button, CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { screenInfo } from '../../utils/constans';
 import { usePermissions, LOCATION } from 'expo-permissions';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../redux/actions/authorization_actions';
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = ({
+    navigation,
+    dispatch,
+    isAuthenticated,
+    isLoggingOut,
+}) => {
     const [permission, askForPermission] = usePermissions(LOCATION, {
         ask: true,
     });
+
+    const handleSubmit = () => {
+        dispatch(logoutUser());
+        navigation.navigate(screenInfo.login.name);
+    };
 
     return (
         <View style={styles.container}>
@@ -18,9 +30,7 @@ const SettingsScreen = ({ navigation }) => {
                 title={'Wyloguj się'}
                 titleStyle={{ marginRight: 10 }}
                 icon={<Icon name="sign-out" size={15} color="white" />}
-                onPress={() => {
-                    navigation.navigate(screenInfo.login.name);
-                }}
+                onPress={handleSubmit}
             />
             {/* <CheckBox
                 center
@@ -39,7 +49,6 @@ const SettingsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: 'center',
         alignContent: 'center',
         margin: 10,
     },
@@ -51,4 +60,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SettingsScreen;
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        isLoggingOut: state.isLoggingOut,
+    };
+};
+export default connect(mapStateToProps)(SettingsScreen);
