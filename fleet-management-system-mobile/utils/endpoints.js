@@ -12,7 +12,6 @@ export const getDriverStatistics = (user, setData) => {
         })
         .then((res) => {
             const data = res.data.result;
-            console.log(data);
 
             if (data != null) {
                 setData({
@@ -33,7 +32,6 @@ export const getDriverStatistics = (user, setData) => {
 };
 
 export const getDriverCompanyInfo = (user, setData) => {
-    console.log(user);
     axios
         .get(`${API_URL}/drivers/get_driver_company?mail=${user.email}`, {
             withCredentials: true,
@@ -66,6 +64,33 @@ export const getDriverCompanyInfo = (user, setData) => {
         .catch((error) => {
             console.log(
                 `Error while attempting to fetch data about driver company info:\n ${error}`
+            );
+        });
+};
+
+export const getDriverVehicles = (user, setData) => {
+    console.log(user);
+    axios
+        .get(`${API_URL}/drivers/get_assigned_vehicles?mail=${user.email}`, {
+            withCredentials: true,
+            headers: {
+                Authorization: user.token,
+            },
+        })
+        .then((res) => {
+            const data = res.data.result;
+            if (data != null) {
+                console.log('[getDriverVehicles]data:');
+                console.log(data);
+                data.map((x) => (x['key'] = x.vin));
+                setData(data);
+            }
+
+            // setIsLoading(false);
+        })
+        .catch((error) => {
+            console.log(
+                `Error while attempting to fetch data about driver assigned vehicles:\n ${error}`
             );
         });
 };

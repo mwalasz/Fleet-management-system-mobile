@@ -31,4 +31,6 @@ export const defaultVehicleImagePath =
 export const defaultUserPath =
     'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg';
 
-export const API_URL = 'http://ea7a5b8035e2.ngrok.io' + '/api';
+export const sadCar = 'https://jooinn.com/images/sad-car-11.png';
+
+export const API_URL = 'http://0c119732e3ad.ngrok.io' + '/api';

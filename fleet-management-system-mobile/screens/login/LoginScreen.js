@@ -40,11 +40,13 @@ const LoginScreen = ({
     };
 
     const handleSubmit = () => {
-        dispatch(loginUser(mail, password, navigation));
+        if (!isAuthenticated) {
+            dispatch(loginUser(mail, password, navigation));
 
-        // if (isAuthenticated) {
-        //     navigation.navigate(screenInfo.home.name);
-        // }
+            setTimeout(() => {
+                navigation.navigate(screenInfo.home.name);
+            }, 1100);
+        }
     };
 
     return (

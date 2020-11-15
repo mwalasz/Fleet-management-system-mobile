@@ -1,61 +1,16 @@
 import React from 'react';
 import VehiclesListItem from './VehiclesListItem';
-import {
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    StatusBar,
-    Text,
-    View,
-} from 'react-native';
+import EmptyListItem from './EmptyListItem';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 
-const DATA = [
-    {
-        id: 'vw_polo_1',
-        brand: 'Volkswagen',
-        model: 'Polo',
-        licensePlate: 'SK1234A',
-    },
-    {
-        id: 'vw_passat_1',
-        brand: 'Volkswagen',
-        model: 'Passat',
-        licensePlate: 'SK4321Z',
-    },
-    {
-        id: 'skoda_superb_1',
-        brand: 'Skoda',
-        model: 'Superb',
-        licensePlate: 'SZ00000',
-    },
-    {
-        id: 'vw_polo_2',
-        brand: 'Volkswagen',
-        model: 'Polo',
-        licensePlate: 'SK1234A',
-    },
-    {
-        id: 'vw_passat_2',
-        brand: 'Volkswagen',
-        model: 'Passat',
-        licensePlate: 'SK4321Z',
-    },
-    {
-        id: 'skoda_superb_2',
-        brand: 'Skoda',
-        model: 'Superb',
-        licensePlate: 'SZ00000',
-    },
-];
-
-const VehiclesList = ({ selectedId, setSelectedId }) => {
+const VehiclesList = ({ selectedKey, setSelectedKey, vehicles }) => {
     const renderItem = ({ item }) => {
-        const isItMe = item.id === selectedId;
+        const isItMe = item.key === selectedKey;
 
         return (
             <VehiclesListItem
                 item={item}
-                onPress={() => setSelectedId(isItMe ? null : item.id)}
+                onPress={() => setSelectedKey(isItMe ? null : item.key)}
                 isSelected={isItMe}
             />
         );
@@ -65,12 +20,13 @@ const VehiclesList = ({ selectedId, setSelectedId }) => {
         <SafeAreaView style={styles.container}>
             <FlatList
                 style={styles.list}
-                data={DATA}
+                data={vehicles}
                 renderItem={(item) =>
-                    renderItem(item, selectedId, setSelectedId)
+                    renderItem(item, selectedKey, setSelectedKey)
                 }
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
+                keyExtractor={(item) => item.key}
+                extraData={selectedKey}
+                ListEmptyComponent={vehicles.length != 0 && <EmptyListItem />}
             />
         </SafeAreaView>
     );

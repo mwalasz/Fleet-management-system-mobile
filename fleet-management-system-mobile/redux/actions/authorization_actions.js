@@ -14,7 +14,7 @@ export const VERIFY_USER = 'VERIFY_USER';
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
 export const VERIFY_ERROR = 'VERIFY_ERROR';
 
-export const loginUser = (mail, password, navigation) => (dispatch) => {
+export const loginUser = (mail, password) => (dispatch) => {
     dispatch(requestLogin());
     axios
         .post(
@@ -28,7 +28,7 @@ export const loginUser = (mail, password, navigation) => (dispatch) => {
         .then((res) => {
             const user = res.data.result;
             if (user.role === 'driver') {
-                dispatch(receiveLogin(user, navigation));
+                dispatch(receiveLogin(user));
             } else {
                 dispatch(loginWrongRole());
             }
@@ -70,8 +70,7 @@ const requestLogin = () => {
     };
 };
 
-const receiveLogin = (user, navigation) => {
-    navigation.navigate(screenInfo.home.name);
+const receiveLogin = (user) => {
     return {
         type: LOGIN_SUCCESS,
         user,

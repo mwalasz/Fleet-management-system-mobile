@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import VehiclesList from './components/VehiclesList';
 import FloatingButton from '../../components/FloatingButton';
 import { screenInfo } from '../../utils/constans';
+import { connect } from 'react-redux';
+import { getDriverVehicles } from '../../utils/endpoints';
 
-const VehiclesScreen = ({ navigation }) => {
-    const [selectedId, setSelectedId] = useState(null);
+const VehiclesScreen = ({ navigation, user }) => {
+    const [selectedKey, setSelectedKey] = useState(null);
+    const [vehicles, setVehicles] = useState([]);
+
+    useEffect(() => {
+        console.log('dupsko');
+        console.log('mejl:');
+
+        getDriverVehicles(user, setVehicles);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -18,15 +28,16 @@ const VehiclesScreen = ({ navigation }) => {
                     </Text>
                 </View>
                 <VehiclesList
-                    selectedId={selectedId}
-                    setSelectedId={setSelectedId}
+                    vehicles={vehicles}
+                    selectedKey={selectedKey}
+                    setSelectedKey={setSelectedKey}
                 />
             </View>
             <FloatingButton
-                disabled={selectedId === null}
+                disabled={selectedKey === null}
                 onClick={() =>
                     navigation.navigate(screenInfo.recording.name, {
-                        id: selectedId,
+                        id: selectedKey,
                     })
                 }
             />
@@ -59,4 +70,9 @@ const styles = StyleSheet.create({
     },
 });
 
-export default VehiclesScreen;
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+    };
+};
+export default connect(mapStateToProps)(VehiclesScreen);
