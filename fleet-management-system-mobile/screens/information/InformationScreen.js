@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
@@ -9,24 +9,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Title from '../../components/Title';
 import { Dimensions } from 'react-native';
 import Modal from '../../components/modal/Modal';
+import { connect } from 'react-redux';
+import { getDriverStatistics } from '../../utils/endpoints';
+import { userStatisticsData } from '../../utils/createDataForModal';
 
-const InformationScreen = ({ navigation }) => {
+const InformationScreen = ({ navigation, user }) => {
     const [modalVisible, setModalVisible] = useState(false);
-
-    const userData = [
-        {
-            info: 'Ilość tras',
-            data: '4',
-        },
-        {
-            info: 'Łączny dystans',
-            data: '1234 km',
-        },
-        {
-            info: 'Średnia prędkość',
-            data: '85 km/h',
-        },
-    ];
+    const [userApiData, setUserApiData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     const companyData = [
         {
@@ -47,6 +37,12 @@ const InformationScreen = ({ navigation }) => {
         },
     ];
 
+    useEffect(() => {
+        console.log('use effect fired');
+        setIsLoading(true);
+        getDriverStatistics(user, setUserApiData);
+    }, []);
+
     return (
         <View style={styles.container}>
             <View style={styles.userInfoContainer}>
@@ -62,7 +58,7 @@ const InformationScreen = ({ navigation }) => {
             <View style={styles.statisticsContainer}>
                 <Title border text={'Twoje statystyki'} />
                 <View style={styles.data}>
-                    {userData.map((x) => {
+                    {userStatisticsData(userApiData).map((x) => {
                         return <RowData info={x.info} data={x.data} />;
                     })}
                 </View>
@@ -75,8 +71,12 @@ const InformationScreen = ({ navigation }) => {
                     icon={<Icon name="info-circle" size={15} color="white" />}
                     containerStyle={{ alignSelf: 'stretch' }}
                     onPress={() => {
-                        setModalVisible(true);
+                        console.log(userApiData);
                     }}
+                    isLoading={isLoading}
+                    // onPress={() => {
+                    //     setModalVisible(true);
+                    // }}
                 />
             </View>
             <Modal
@@ -124,4 +124,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default InformationScreen;
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+    };
+};
+
+export default connect(mapStateToProps)(InformationScreen);

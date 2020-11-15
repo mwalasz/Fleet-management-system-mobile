@@ -26,7 +26,7 @@ const LoginScreen = ({
     wrongRole,
     userName,
 }) => {
-    const [mail, onChangeMail] = React.useState('test@test.pl');
+    const [mail, onChangeMail] = React.useState('stasiek@poczta.pl');
     const [password, onChangePassword] = React.useState('admin');
     const [isButtonActive, changeButtonActiveness] = React.useState(true);
 
