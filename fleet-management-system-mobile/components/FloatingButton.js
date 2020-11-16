@@ -1,23 +1,36 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { withTheme } from 'react-native-elements';
-import { Button } from 'react-native-elements';
+import { Button, Tooltip } from 'react-native-elements';
 import Icon from '../components/Icon';
 
-const FloatingButton = ({ theme, disabled, onClick }) => {
-    const gray = theme.colors.gray;
-    const red = theme.colors.red;
-    const green = theme.colors.green;
-
+const FloatingButton = ({ disabled, onClick }) => {
     return (
         <View style={styles.container}>
-            <Button
-                buttonStyle={styles.button}
-                containerStyle={styles.button}
-                icon={<Icon name={disabled ? 'exclamation-triangle' : 'car'} />}
-                disabled={disabled}
-                onPress={onClick}
-            />
+            <Tooltip
+                width={180}
+                height={60}
+                backgroundColor="#2196F3"
+                popover={
+                    <View style={styles.tooltip}>
+                        <Text style={styles.tooltipText}>
+                            Brak wymaganych uprawnień!
+                        </Text>
+                    </View>
+                }
+            >
+                <Button
+                    buttonStyle={styles.button}
+                    containerStyle={styles.button}
+                    icon={
+                        <Icon
+                            name={disabled ? 'exclamation-triangle' : 'car'}
+                        />
+                    }
+                    disabled={disabled}
+                    onPress={onClick}
+                />
+            </Tooltip>
         </View>
     );
 };
@@ -38,6 +51,14 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
+        color: 'red',
+    },
+    tooltip: {
+        padding: 20,
+    },
+    tooltipText: {
+        color: '#fff',
+        fontWeight: '700',
     },
 });
 
