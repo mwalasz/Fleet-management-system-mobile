@@ -1,5 +1,4 @@
 import { API_URL } from './constans';
-import { formatTimeData, formatSpeed, formatDistance } from './formating';
 import axios from 'axios';
 import {
     postRequest,
@@ -17,14 +16,13 @@ export const getDriverStatistics = (user, setData) => {
         })
         .then((res) => {
             const data = res.data.result;
-
             if (data != null) {
                 setData({
                     numOfTrips: data.numberOfTrips,
-                    avgSpeed: formatSpeed(data.averageSpeedInKilometersPerHour),
-                    maxSpeed: formatSpeed(data.maximumSpeedInKilometersPerHour),
-                    totalDistance: formatDistance(data.totalDistanceInMeters),
-                    totalDuration: formatTimeData(data.totalDurationInSeconds),
+                    avgSpeed: data.averageSpeedInKilometersPerHour,
+                    maxSpeed: data.maximumSpeedInKilometersPerHour,
+                    totalDistance: data.totalDistanceInMeters,
+                    totalDuration: data.totalDurationInSeconds,
                     licenseNumber: data.driverLicenseNumber,
                 });
             }
@@ -63,8 +61,6 @@ export const getDriverCompanyInfo = (user, setData) => {
                     managerPhoneNumber: phoneNumber,
                 });
             }
-
-            // setIsLoading(false);
         })
         .catch((error) => {
             console.log(
@@ -74,7 +70,6 @@ export const getDriverCompanyInfo = (user, setData) => {
 };
 
 export const getDriverVehicles = (user, setData) => {
-    console.log(user);
     axios
         .get(`${API_URL}/drivers/get_assigned_vehicles?mail=${user.email}`, {
             withCredentials: true,
@@ -85,13 +80,9 @@ export const getDriverVehicles = (user, setData) => {
         .then((res) => {
             const data = res.data.result;
             if (data != null) {
-                console.log('[getDriverVehicles]data:');
-                console.log(data);
                 data.map((x) => (x['key'] = x.vin));
                 setData(data);
             }
-
-            // setIsLoading(false);
         })
         .catch((error) => {
             console.log(

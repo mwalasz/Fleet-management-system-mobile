@@ -47,7 +47,6 @@ const VehiclesScreen = ({ navigation, user, permissionsGranted }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
     },
     text: {
         backgroundColor: '#fff',

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
 import Icon from '../../components/Icon';
 import { screenInfo } from '../../utils/constans';
-import { usePermissions, LOCATION, getAsync, askAsync } from 'expo-permissions';
+import { LOCATION, getAsync, askAsync } from 'expo-permissions';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../redux/actions/authorization_actions';
 import { expo } from '../../app.json';
@@ -23,10 +23,8 @@ const SettingsScreen = ({ navigation, dispatch }) => {
     };
 
     const checkLocationPermissions = async () => {
-        console.log('checkPermissions:');
         dispatch(permissionRequest());
-        const { status, canAskAgain, granted } = await getAsync(LOCATION);
-        console.log(granted);
+        const { granted } = await getAsync(LOCATION);
         setIsGranted(granted);
 
         if (granted) {
@@ -37,9 +35,7 @@ const SettingsScreen = ({ navigation, dispatch }) => {
     };
 
     const askForLocationPermissions = async () => {
-        console.log('askForPermissions:');
         const { status } = await askAsync(LOCATION);
-        console.log(status);
 
         if (status === 'granted') {
             setIsGranted(status === 'granted' ? true : false);
@@ -88,7 +84,6 @@ const SettingsScreen = ({ navigation, dispatch }) => {
                         checked={granted}
                         onPress={() => {
                             if (!granted) {
-                                console.log('tera bd chcial pozwolenie');
                                 askForLocationPermissions();
                             }
                         }}

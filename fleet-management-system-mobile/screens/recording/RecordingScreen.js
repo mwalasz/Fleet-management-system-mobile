@@ -5,25 +5,15 @@ import { Button } from 'react-native-elements';
 import Icon from '../../components/Icon';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
 import { Dimensions } from 'react-native';
 import Modal from '../../components/modal/Modal';
 import RowData from '../../components/RowData';
-import {
-    calcMaxSpeed,
-    calcRouteDistance,
-    calcAverageSpeed,
-    calcRouteDuration,
-} from '../../utils/calculations';
-import {
-    formatTimeData,
-    formatDate,
-    formatDistance,
-    formatSpeed,
-} from '../../utils/formating';
+import { calcRouteDistance, calcAverageSpeed } from '../../utils/calculations';
+import { formatTimeData, formatSpeed } from '../../utils/formating';
 import { postNewTrip } from '../../utils/endpoints';
 import { connect } from 'react-redux';
 import { postReset } from '../../redux/actions/post_actions';
+import { driverRecordedTrip } from '../../utils/createDataForModal';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
@@ -41,8 +31,6 @@ class RecordingScreen extends React.Component {
             currentLongitude: null,
             currentSpeed: 0,
             locationHistory: [],
-            error: '',
-            isRecording: false,
             currentRegion: null,
             isModalVisible: false,
             startTime: null,
@@ -54,93 +42,39 @@ class RecordingScreen extends React.Component {
         };
     }
 
-    getDataForModal = () => {
-        return [
-            {
-                info: 'Rozpoczęcie',
-                data: formatDate(this.state.startTime),
-            },
-            {
-                info: 'Zakończenie',
-                data: formatDate(this.state.endTime),
-            },
-            {
-                info: 'Długość trwania',
-                data: formatTimeData(this.state.duration),
-            },
-            {
-                info: 'Całkowity dystans',
-                data: formatDistance(this.state.distance),
-            },
-            {
-                info: 'Maksymalna prędkość',
-                data: formatSpeed(this.state.maxSpeed),
-            },
-            {
-                info: 'Średnia prędkość',
-                data: formatSpeed(this.state.averageSpeed),
-            },
-        ];
-    };
-
-    validatePermissions = async () => {
-        let { status } = await Permissions.getAsync(Permissions.LOCATION);
-
-        console.log('status');
-        console.log(status);
-
-        if (status !== 'granted') {
-            let { newStatus } = await Permissions.askAsync(
-                Permissions.LOCATION
-            );
-
-            if (newStatus !== 'granted') {
-                console.log('Brak pozwoleń!');
-
-                return false;
-            }
-        }
-
-        return true;
-    };
-
     start = async () => {
-        if (await this.validatePermissions()) {
-            const startTime = new Date();
-            this.setState({ startTime });
+        const startTime = new Date();
+        this.setState({ startTime });
 
-            this.locationObj = await Location.watchPositionAsync(
-                {
-                    accuracy: Location.LocationAccuracy.High,
-                    distanceInterval: 5,
-                    timeInterval: 1000,
-                },
-                (newLocation) => {
-                    let { latitude, longitude, speed } = newLocation.coords;
-                    let convertedSpeed = parseFloat(speed / 3.6).toFixed(1);
+        this.locationObj = await Location.watchPositionAsync(
+            {
+                accuracy: Location.LocationAccuracy.High,
+                distanceInterval: 5,
+                timeInterval: 1000,
+            },
+            (newLocation) => {
+                let { latitude, longitude, speed } = newLocation.coords;
+                let convertedSpeed = parseFloat(speed / 3.6).toFixed(1);
 
-                    this.setState((prevState) => ({
-                        currentLatitude: latitude,
-                        currentLongitude: longitude,
-                        currentSpeed: convertedSpeed,
-                        locationHistory: [
-                            ...prevState.locationHistory,
-                            {
-                                latitude,
-                                longitude,
-                            },
-                        ],
-                        maxSpeed: parseFloat(
-                            prevState.maxSpeed < convertedSpeed
-                                ? convertedSpeed
-                                : prevState.maxSpeed
-                        ).toFixed(1),
-                    }));
-                }
-            );
-        }
-
-        this.setState({ error: 'No permission granted!' });
+                this.setState((prevState) => ({
+                    currentLatitude: latitude,
+                    currentLongitude: longitude,
+                    currentSpeed: convertedSpeed,
+                    locationHistory: [
+                        ...prevState.locationHistory,
+                        {
+                            latitude,
+                            longitude,
+                        },
+                    ],
+                    maxSpeed: parseFloat(
+                        prevState.maxSpeed < convertedSpeed
+                            ? convertedSpeed
+                            : prevState.maxSpeed
+                    ).toFixed(1),
+                }));
+            }
+        );
     };
 
     startTimer = () => {
@@ -192,8 +126,6 @@ class RecordingScreen extends React.Component {
                 () => console.log(this.state)
             );
         }
-
-        this.setState({ error: 'Error while ending location tracking!' });
     };
 
     userLocationChanged(event) {
@@ -237,7 +169,6 @@ class RecordingScreen extends React.Component {
             currentLongitude: null,
             currentSpeed: 0,
             locationHistory: [],
-            error: '',
             startTime: null,
             endTime: null,
             distance: 0,
@@ -337,7 +268,7 @@ class RecordingScreen extends React.Component {
                 </View>
                 <Modal
                     summary
-                    data={this.getDataForModal()}
+                    data={driverRecordedTrip(this.state)}
                     title={'Podsumowanie'}
                     modalVisible={this.state.isModalVisible}
                     acceptAction={() => postNewTrip(this.state, this.dispatch)}
