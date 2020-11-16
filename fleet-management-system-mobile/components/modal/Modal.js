@@ -18,8 +18,8 @@ const Modal = ({
             return <RowData />;
         }
 
-        return data.map((x) => {
-            return <RowData info={x.info} data={x.data} />;
+        return data.map((x, i) => {
+            return <RowData key={i} info={x.info} data={x.data} />;
         });
     };
 
