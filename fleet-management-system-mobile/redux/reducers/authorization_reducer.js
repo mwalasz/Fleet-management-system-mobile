@@ -22,7 +22,7 @@ const initialState = {
     user: {},
 };
 
-const authorizationReducer = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_REQUEST:
             return {
@@ -96,4 +96,4 @@ const authorizationReducer = (state = initialState, action) => {
     }
 };
 
-export default authorizationReducer;
+export default auth;

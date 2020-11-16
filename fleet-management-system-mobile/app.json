@@ -4,7 +4,7 @@
     "expo": {
         "name": "fleet-management-system-mobile",
         "slug": "fleet-management-system-mobile",
-        "version": "1.0.0",
+        "version": "1.2.1",
         "assetBundlePatterns": ["**/*"],
         "orientation": "portrait"
     }

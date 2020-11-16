@@ -7,15 +7,16 @@ import { usePermissions, LOCATION, getAsync, askAsync } from 'expo-permissions';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../redux/actions/authorization_actions';
 import { expo } from '../../app.json';
-const SettingsScreen = ({
-    navigation,
-    dispatch,
-    isAuthenticated,
-    isLoggingOut,
-}) => {
+import {
+    permissionRequest,
+    permissionError,
+    permissionSuccess,
+} from '../../redux/actions/permission_actions';
+
+const SettingsScreen = ({ navigation, dispatch }) => {
     const [granted, setIsGranted] = useState(false);
     const [denied, setIsDenied] = useState(false);
-    const [packageVersion, setPackageVersion] = useState('');
+
     const handleSubmit = () => {
         dispatch(logoutUser());
         navigation.navigate(screenInfo.login.name);
@@ -23,9 +24,16 @@ const SettingsScreen = ({
 
     const checkLocationPermissions = async () => {
         console.log('checkPermissions:');
+        dispatch(permissionRequest());
         const { status, canAskAgain, granted } = await getAsync(LOCATION);
         console.log(granted);
         setIsGranted(granted);
+
+        if (granted) {
+            dispatch(permissionSuccess());
+        } else {
+            dispatch(permissionError());
+        }
     };
 
     const askForLocationPermissions = async () => {
@@ -35,8 +43,10 @@ const SettingsScreen = ({
 
         if (status === 'granted') {
             setIsGranted(status === 'granted' ? true : false);
+            dispatch(permissionSuccess());
         } else if (status === 'denied') {
             setIsDenied(true);
+            dispatch(permissionError());
         }
     };
 
@@ -114,9 +124,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.authorizationReducer.user,
-        isAuthenticated: state.authorizationReducer.isAuthenticated,
-        isLoggingOut: state.authorizationReducer.isLoggingOut,
+        user: state.auth.user,
+        isAuthenticated: state.auth.isAuthenticated,
+        isLoggingOut: state.auth.isLoggingOut,
+        isGranted: state.permission.isGranted,
     };
 };
 export default connect(mapStateToProps)(SettingsScreen);

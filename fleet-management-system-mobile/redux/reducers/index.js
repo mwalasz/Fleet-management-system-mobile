@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import authorizationReducer from './authorization_reducer';
-import postReducer from './post_reducer';
+import auth from './authorization_reducer';
+import post from './post_reducer';
+import permission from './permission_reducer';
 
 const rootReducer = combineReducers({
-    authorizationReducer,
-    postReducer,
+    auth,
+    post,
+    permission,
 });
-
-// const rootReducer = authorizationReducer;
 
 export default rootReducer;

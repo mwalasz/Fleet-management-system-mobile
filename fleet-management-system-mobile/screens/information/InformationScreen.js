@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.authorizationReducer.user,
+        user: state.auth.user,
     };
 };
 

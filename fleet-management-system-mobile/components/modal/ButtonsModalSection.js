@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        isSent: state.postReducer.isSent,
-        isError: state.postReducer.isError,
-        isSending: state.postReducer.isSending,
-        isSuccess: state.postReducer.isSuccess,
+        isSent: state.post.isSent,
+        isError: state.post.isError,
+        isSending: state.post.isSending,
+        isSuccess: state.post.isSuccess,
     };
 };
 

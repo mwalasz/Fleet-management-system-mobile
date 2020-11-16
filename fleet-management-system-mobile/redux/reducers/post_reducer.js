@@ -12,10 +12,9 @@ const initialState = {
     isSuccess: false,
 };
 
-const postReducer = (state = initialState, action) => {
+const post = (state = initialState, action) => {
     switch (action.type) {
         case POST_REQUEST:
-            console.log('POST_REQUEST');
             return {
                 ...state,
                 isSending: true,
@@ -24,7 +23,6 @@ const postReducer = (state = initialState, action) => {
             };
 
         case POST_SUCCESS:
-            console.log('POST_SUCCESS');
             return {
                 ...state,
                 isSending: false,
@@ -34,7 +32,6 @@ const postReducer = (state = initialState, action) => {
             };
 
         case POST_ERROR:
-            console.log('POST_ERROR');
             return {
                 ...state,
                 isSending: false,
@@ -44,7 +41,6 @@ const postReducer = (state = initialState, action) => {
             };
 
         case POST_RESET:
-            console.log('POST_RESET');
             return {
                 ...state,
                 isSending: false,
@@ -58,4 +54,4 @@ const postReducer = (state = initialState, action) => {
     }
 };
 
-export default postReducer;
+export default post;

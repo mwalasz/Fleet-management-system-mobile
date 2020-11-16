@@ -6,12 +6,14 @@ import { screenInfo } from '../../utils/constans';
 import { connect } from 'react-redux';
 import { getDriverVehicles } from '../../utils/endpoints';
 
-const VehiclesScreen = ({ navigation, user }) => {
+const VehiclesScreen = ({ navigation, user, permissionsGranted }) => {
     const [selectedKey, setSelectedKey] = useState(null);
     const [vehicles, setVehicles] = useState([]);
 
     useEffect(() => {
         getDriverVehicles(user, setVehicles);
+        console.log('uprawnienia:');
+        console.log(permissionsGranted);
     }, []);
 
     return (
@@ -31,7 +33,7 @@ const VehiclesScreen = ({ navigation, user }) => {
                 />
             </View>
             <FloatingButton
-                disabled={selectedKey === null}
+                disabled={!permissionsGranted || selectedKey === null}
                 onClick={() =>
                     navigation.navigate(screenInfo.recording.name, {
                         vin: selectedKey,
@@ -69,7 +71,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.authorizationReducer.user,
+        user: state.auth.user,
+        permissionsGranted: state.permission.isGranted,
     };
 };
 export default connect(mapStateToProps)(VehiclesScreen);

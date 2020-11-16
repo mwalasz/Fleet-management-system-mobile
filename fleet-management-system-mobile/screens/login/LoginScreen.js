@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        isLoggingIn: state.authorizationReducer.isLoggingIn,
-        loginError: state.authorizationReducer.loginError,
-        isAuthenticated: state.authorizationReducer.isAuthenticated,
-        wrongRole: state.authorizationReducer.wrongRole,
-        userName: state.authorizationReducer.user.firstName,
+        isLoggingIn: state.auth.isLoggingIn,
+        loginError: state.auth.loginError,
+        isAuthenticated: state.auth.isAuthenticated,
+        wrongRole: state.auth.wrongRole,
+        userName: state.auth.user.firstName,
     };
 };
 export default connect(mapStateToProps)(LoginScreen);
