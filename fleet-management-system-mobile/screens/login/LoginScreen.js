@@ -40,13 +40,7 @@ const LoginScreen = ({
     };
 
     const handleSubmit = () => {
-        if (!isAuthenticated) {
-            dispatch(loginUser(mail, password, navigation));
-
-            setTimeout(() => {
-                navigation.navigate(screenInfo.home.name);
-            }, 1100);
-        }
+        dispatch(loginUser(mail, password, navigation));
     };
 
     return (
@@ -141,11 +135,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        isLoggingIn: state.isLoggingIn,
-        loginError: state.loginError,
-        isAuthenticated: state.isAuthenticated,
-        wrongRole: state.wrongRole,
-        userName: state.user.firstName,
+        isLoggingIn: state.authorizationReducer.isLoggingIn,
+        loginError: state.authorizationReducer.loginError,
+        isAuthenticated: state.authorizationReducer.isAuthenticated,
+        wrongRole: state.authorizationReducer.wrongRole,
+        userName: state.authorizationReducer.user.firstName,
     };
 };
 export default connect(mapStateToProps)(LoginScreen);

@@ -4,7 +4,15 @@ import Title from '../Title';
 import RowData from '../RowData';
 import ButtonsSection from './ButtonsModalSection';
 
-const Modal = ({ modalVisible, hideModal, title, data, summary }) => {
+const Modal = ({
+    modalVisible,
+    acceptAction,
+    hideModal,
+    title,
+    data,
+    summary,
+    acceptActionIsLoading,
+}) => {
     const renderRowsData = () => {
         if (!data) {
             return <RowData />;
@@ -30,7 +38,7 @@ const Modal = ({ modalVisible, hideModal, title, data, summary }) => {
                         <ButtonsSection
                             summary={summary}
                             hideModal={hideModal}
-                            acceptAction={hideModal}
+                            acceptAction={acceptAction}
                         />
                     </View>
                 </View>

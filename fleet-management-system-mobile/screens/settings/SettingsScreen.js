@@ -62,9 +62,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user,
-        isAuthenticated: state.isAuthenticated,
-        isLoggingOut: state.isLoggingOut,
+        user: state.authorizationReducer.user,
+        isAuthenticated: state.authorizationReducer.isAuthenticated,
+        isLoggingOut: state.authorizationReducer.isLoggingOut,
     };
 };
 export default connect(mapStateToProps)(SettingsScreen);

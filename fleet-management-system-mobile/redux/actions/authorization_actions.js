@@ -14,7 +14,7 @@ export const VERIFY_USER = 'VERIFY_USER';
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
 export const VERIFY_ERROR = 'VERIFY_ERROR';
 
-export const loginUser = (mail, password) => (dispatch) => {
+export const loginUser = (mail, password, navigation) => (dispatch) => {
     dispatch(requestLogin());
     axios
         .post(
@@ -29,6 +29,9 @@ export const loginUser = (mail, password) => (dispatch) => {
             const user = res.data.result;
             if (user.role === 'driver') {
                 dispatch(receiveLogin(user));
+                setTimeout(() => {
+                    navigation.navigate(screenInfo.home.name);
+                }, 1100);
             } else {
                 dispatch(loginWrongRole());
             }

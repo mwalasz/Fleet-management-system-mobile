@@ -1,6 +1,11 @@
 import { API_URL } from './constans';
 import { formatTimeData, formatSpeed, formatDistance } from './formating';
 import axios from 'axios';
+import {
+    postRequest,
+    postSuccessful,
+    postError,
+} from '../redux/actions/post_actions';
 
 export const getDriverStatistics = (user, setData) => {
     axios
@@ -92,5 +97,42 @@ export const getDriverVehicles = (user, setData) => {
             console.log(
                 `Error while attempting to fetch data about driver assigned vehicles:\n ${error}`
             );
+        });
+};
+
+export const postNewTrip = (data, dispatch) => {
+    dispatch(postRequest());
+    axios
+        .post(
+            `${API_URL}/trips/add`,
+            {
+                userMail: data.user.email,
+                vehicleVinNumber: data.vehicleVin,
+                locationHistory: data.locationHistory,
+                startTime: data.startTime,
+                endTime: data.endTime,
+                travelTime: data.duration,
+                distance: parseFloat(data.distance),
+                averageSpeed: parseFloat(data.averageSpeed),
+                maximumSpeed: parseFloat(data.maxSpeed),
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    Authorization: data.user.token,
+                },
+            }
+        )
+        .then((res) => {
+            console.log(res.data);
+            if (res.data.statusCode === 200) {
+                dispatch(postSuccessful());
+            } else {
+                dispatch(postError());
+            }
+        })
+        .catch((error) => {
+            console.log(`Error while attempting to add new trip:\n ${error}`);
+            dispatch(postError());
         });
 };

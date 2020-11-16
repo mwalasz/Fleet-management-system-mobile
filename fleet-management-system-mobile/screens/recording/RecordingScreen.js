@@ -21,6 +21,9 @@ import {
     formatDistance,
     formatSpeed,
 } from '../../utils/formating';
+import { postNewTrip } from '../../utils/endpoints';
+import { connect } from 'react-redux';
+import { postReset } from '../../redux/actions/post_actions';
 
 class RecordingScreen extends React.Component {
     constructor(props) {
@@ -30,7 +33,10 @@ class RecordingScreen extends React.Component {
         this.mapRef = null;
         this.region = null;
         this.timer = null;
+        this.dispatch = props.dispatch;
         this.state = {
+            user: props.user,
+            vehicleVin: props.route.params.vin,
             currentLatitude: null,
             currentLongitude: null,
             currentSpeed: 0,
@@ -155,6 +161,7 @@ class RecordingScreen extends React.Component {
         await this.start();
         this.startTimer();
         this.setState({ isRecording: true });
+        this.dispatch(postReset());
     };
 
     calculateAndSaveRouteData = () => {
@@ -335,6 +342,7 @@ class RecordingScreen extends React.Component {
                     data={this.getDataForModal()}
                     title={'Podsumowanie'}
                     modalVisible={this.state.isModalVisible}
+                    acceptAction={() => postNewTrip(this.state, this.dispatch)}
                     hideModal={() => {
                         this.setState({ isModalVisible: false });
                         this.resetData();
@@ -392,4 +400,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RecordingScreen;
+const mapStateToProps = (state) => {
+    return {
+        user: state.authorizationReducer.user,
+    };
+};
+
+export default connect(mapStateToProps)(RecordingScreen);

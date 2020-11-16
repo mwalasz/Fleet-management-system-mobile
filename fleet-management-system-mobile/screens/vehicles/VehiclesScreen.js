@@ -11,9 +11,6 @@ const VehiclesScreen = ({ navigation, user }) => {
     const [vehicles, setVehicles] = useState([]);
 
     useEffect(() => {
-        console.log('dupsko');
-        console.log('mejl:');
-
         getDriverVehicles(user, setVehicles);
     }, []);
 
@@ -37,7 +34,7 @@ const VehiclesScreen = ({ navigation, user }) => {
                 disabled={selectedKey === null}
                 onClick={() =>
                     navigation.navigate(screenInfo.recording.name, {
-                        id: selectedKey,
+                        vin: selectedKey,
                     })
                 }
             />
@@ -72,7 +69,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user,
+        user: state.authorizationReducer.user,
     };
 };
 export default connect(mapStateToProps)(VehiclesScreen);
