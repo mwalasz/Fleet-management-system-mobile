@@ -6,7 +6,7 @@ import { screenInfo } from '../../utils/constans';
 import { usePermissions, LOCATION, getAsync, askAsync } from 'expo-permissions';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../redux/actions/authorization_actions';
-
+import { expo } from '../../app.json';
 const SettingsScreen = ({
     navigation,
     dispatch,
@@ -15,7 +15,7 @@ const SettingsScreen = ({
 }) => {
     const [granted, setIsGranted] = useState(false);
     const [denied, setIsDenied] = useState(false);
-
+    const [packageVersion, setPackageVersion] = useState('');
     const handleSubmit = () => {
         dispatch(logoutUser());
         navigation.navigate(screenInfo.login.name);
@@ -83,6 +83,9 @@ const SettingsScreen = ({
                             }
                         }}
                     />
+                </View>
+                <View style={styles.section}>
+                    <Text>{`Wersja aplikacji: ${expo.version}`}</Text>
                 </View>
             </View>
         </View>
