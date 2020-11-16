@@ -39,12 +39,18 @@ const ButtonModalSection = ({
                     onPress={acceptAction}
                 />
                 <Button
-                    title={'Anuluj'}
+                    title={(isSuccess && 'Powrót') || 'Anuluj'}
                     titleStyle={{ marginRight: 10 }}
                     iconRight
-                    icon={<Icon name="times-circle" />}
+                    icon={
+                        <Icon
+                            name={isSuccess ? 'chevron-right' : 'times-circle'}
+                        />
+                    }
                     containerStyle={styles.multiButtons}
-                    buttonStyle={{ backgroundColor: '#E80000' }}
+                    buttonStyle={{
+                        backgroundColor: isSuccess ? '#2196F3' : '#E80000',
+                    }}
                     onPress={cancelAction}
                 />
             </View>
