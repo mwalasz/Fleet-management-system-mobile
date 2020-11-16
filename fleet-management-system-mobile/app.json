@@ -5,6 +5,7 @@
         "name": "fleet-management-system-mobile",
         "slug": "fleet-management-system-mobile",
         "version": "1.0.0",
-        "assetBundlePatterns": ["**/*"]
+        "assetBundlePatterns": ["**/*"],
+        "orientation": "portrait"
     }
 }
