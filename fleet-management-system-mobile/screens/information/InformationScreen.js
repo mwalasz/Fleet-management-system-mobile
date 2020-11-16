@@ -5,7 +5,7 @@ import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
 import { defaultUserPath } from '../../utils/constans';
 import RowData from '../../components/RowData';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from '../../components/Icon';
 import Title from '../../components/Title';
 import { Dimensions } from 'react-native';
 import Modal from '../../components/modal/Modal';
@@ -61,12 +61,8 @@ const InformationScreen = ({ navigation, user }) => {
                     title={'Firma'}
                     titleStyle={{ marginRight: 10 }}
                     iconRight
-                    icon={<Icon name="info-circle" size={15} color="white" />}
+                    icon={<Icon name="info-circle" />}
                     containerStyle={{ alignSelf: 'stretch' }}
-                    // onPress={() => {
-                    //     console.log(driverStatistics);
-                    //     console.log(companyInfo);
-                    // }}
                     loading={isLoading}
                     onPress={() => {
                         setModalVisible(true);

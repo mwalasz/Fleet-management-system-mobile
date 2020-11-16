@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import backHandler from '../../handlers/backHandler';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from '../../components/Icon';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -321,8 +321,6 @@ class RecordingScreen extends React.Component {
                                                 ? 'check-circle-o'
                                                 : 'dot-circle-o'
                                         }
-                                        size={15}
-                                        color="white"
                                     />
                                 }
                                 title={

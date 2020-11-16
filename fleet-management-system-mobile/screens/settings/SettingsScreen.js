@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from '../../components/Icon';
 import { screenInfo } from '../../utils/constans';
 import { usePermissions, LOCATION } from 'expo-permissions';
 import { connect } from 'react-redux';
@@ -29,7 +29,7 @@ const SettingsScreen = ({
                 buttonStyle={styles.button}
                 title={'Wyloguj się'}
                 titleStyle={{ marginRight: 10 }}
-                icon={<Icon name="sign-out" size={15} color="white" />}
+                icon={<Icon name="sign-out" />}
                 onPress={handleSubmit}
             />
             {/* <CheckBox

@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 import LogoImage from '../../components/LogoImage';
 import LoginFormInput from './components/LoginFormInput';
-import { screenInfo } from '../../utils/constans';
 import { Header } from '@react-navigation/stack';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from '../../components/Icon';
 import { connect } from 'react-redux';
 import { loginUser } from '../../redux/actions/authorization_actions';
 
@@ -96,8 +95,6 @@ const LoginScreen = ({
                                             ? 'check-circle'
                                             : 'sign-in'
                                     }
-                                    size={15}
-                                    color="white"
                                 />
                             }
                             disabled={!isButtonActive}

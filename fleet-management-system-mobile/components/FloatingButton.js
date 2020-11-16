@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from '../components/Icon';
 
 const FloatingButton = ({ theme, disabled, onClick }) => {
     const gray = theme.colors.gray;
@@ -14,13 +14,7 @@ const FloatingButton = ({ theme, disabled, onClick }) => {
             <Button
                 buttonStyle={styles.button}
                 containerStyle={styles.button}
-                icon={
-                    <Icon
-                        name={disabled ? 'exclamation-triangle' : 'car'}
-                        size={15}
-                        color="white"
-                    />
-                }
+                icon={<Icon name={disabled ? 'exclamation-triangle' : 'car'} />}
                 disabled={disabled}
                 onPress={onClick}
             />
