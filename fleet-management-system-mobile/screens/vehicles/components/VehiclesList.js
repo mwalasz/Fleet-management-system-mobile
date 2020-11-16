@@ -24,7 +24,7 @@ const VehiclesList = ({ selectedKey, setSelectedKey, vehicles }) => {
                 renderItem={(item) =>
                     renderItem(item, selectedKey, setSelectedKey)
                 }
-                keyExtractor={(item) => item.key}
+                keyExtractor={(item, index) => index.toString()}
                 extraData={selectedKey}
                 ListEmptyComponent={vehicles.length != 0 && <EmptyListItem />}
             />
