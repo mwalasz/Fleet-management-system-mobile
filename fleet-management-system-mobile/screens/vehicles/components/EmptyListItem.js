@@ -13,7 +13,7 @@ const EmptyListItem = () => (
             </View>
             <TextCard
                 title={'Brak dostępnych pojazdów!'}
-                content={'Skontaktuj się z kerownikiem :('}
+                content={'Skontaktuj się z kierownikiem :('}
             />
         </View>
     </TouchableOpacity>

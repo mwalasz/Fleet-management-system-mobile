@@ -26,7 +26,7 @@ const VehiclesList = ({ selectedKey, setSelectedKey, vehicles }) => {
                 }
                 keyExtractor={(item, index) => index.toString()}
                 extraData={selectedKey}
-                ListEmptyComponent={vehicles.length != 0 && <EmptyListItem />}
+                ListEmptyComponent={vehicles.length == 0 && <EmptyListItem />}
             />
         </SafeAreaView>
     );
