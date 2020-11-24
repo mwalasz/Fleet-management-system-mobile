@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
@@ -21,7 +21,7 @@ import {
 
 const InformationScreen = ({ navigation, user }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [driverStatistics, setDriverStatistics] = useState({});
+    const [driverStatistics, setDriverStatistics] = useState(null);
     const [companyInfo, setCompanyInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
@@ -31,6 +31,20 @@ const InformationScreen = ({ navigation, user }) => {
         getDriverCompanyInfo(user, setCompanyInfo);
         setIsLoading(false);
     }, []);
+
+    let content;
+
+    if (driverStatistics) {
+        content = userStatisticsData(driverStatistics).map((x) => {
+            return <RowData info={x.info} data={x.data} />;
+        });
+    } else {
+        content = (
+            <Text style={{ alignSelf: 'center' }}>
+                Brak danych na temat Twoich tras!
+            </Text>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -44,17 +58,15 @@ const InformationScreen = ({ navigation, user }) => {
                         user.lastName || 'Nazwisko'
                     }`}
                     content={`Nr prawa jazdy: ${
-                        driverStatistics.licenseNumber || 'brak'
+                        driverStatistics
+                            ? driverStatistics.licenseNumber
+                            : 'brak'
                     }`}
                 />
             </View>
             <View style={styles.statisticsContainer}>
                 <Title border text={'Twoje statystyki'} />
-                <View style={styles.data}>
-                    {userStatisticsData(driverStatistics).map((x) => {
-                        return <RowData info={x.info} data={x.data} />;
-                    })}
-                </View>
+                <View style={styles.data}>{content}</View>
             </View>
             <View style={styles.button}>
                 <Button

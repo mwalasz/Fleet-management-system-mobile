@@ -36,7 +36,7 @@ export const formatDistance = (distance) => {
         }
     }
 
-    return 'Błąd!';
+    return '0 km';
 };
 
 export const formatSpeed = (speed) => {
