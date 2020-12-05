@@ -34,6 +34,28 @@ export const getDriverStatistics = (user, setData) => {
         });
 };
 
+export const getDriverAvatar = (user, setData) => {
+    axios
+        .get(`${API_URL}/images/download?mail=${user.email}`, {
+            withCredentials: true,
+            headers: {
+                Authorization: user.token,
+            },
+        })
+        .then((res) => {
+            const data = res.data.result;
+            if (data != null) {
+                setData(data);
+                console.log('data', data);
+            }
+        })
+        .catch((error) => {
+            console.log(
+                `Error while attempting to fetch data about driver statistics:\n ${error}`
+            );
+        });
+};
+
 export const getDriverCompanyInfo = (user, setData) => {
     axios
         .get(`${API_URL}/drivers/get_driver_company?mail=${user.email}`, {

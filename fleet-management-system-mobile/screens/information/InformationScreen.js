@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import Avatar from '../../components/Avatar';
 import TextCard from '../../components/TextCard';
-import { defaultUserPath } from '../../utils/constans';
+import { DEFAULT_USER_IMAGE } from '../../utils/constans';
 import RowData from '../../components/RowData';
 import Icon from '../../components/Icon';
 import Title from '../../components/Title';
@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import {
     getDriverStatistics,
     getDriverCompanyInfo,
+    getDriverAvatar,
 } from '../../utils/endpoints';
 import {
     userStatisticsData,
@@ -24,11 +25,13 @@ const InformationScreen = ({ navigation, user }) => {
     const [driverStatistics, setDriverStatistics] = useState(null);
     const [companyInfo, setCompanyInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [avatar, setAvatar] = useState(null);
 
     useEffect(() => {
         setIsLoading(true);
         getDriverStatistics(user, setDriverStatistics);
         getDriverCompanyInfo(user, setCompanyInfo);
+        getDriverAvatar(user, setAvatar);
         setIsLoading(false);
     }, []);
 
@@ -50,7 +53,11 @@ const InformationScreen = ({ navigation, user }) => {
         <View style={styles.container}>
             <View style={styles.userInfoContainer}>
                 <View style={styles.avatar}>
-                    <Avatar source={defaultUserPath} />
+                    <Avatar
+                        source={
+                            !isLoading && avatar ? avatar : DEFAULT_USER_IMAGE
+                        }
+                    />
                 </View>
                 <TextCard
                     big

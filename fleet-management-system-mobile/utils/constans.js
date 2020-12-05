@@ -25,12 +25,12 @@ export const screenInfo = {
     },
 };
 
-export const defaultVehicleImagePath =
+export const DEFAULT_VEHICLE_IMAGE =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSEnzWRkeRjv7fTFRWTFnFj3WrUakycnYxhAg&usqp=CAU';
 
-export const defaultUserPath =
-    'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg';
+export const DEFAULT_USER_IMAGE =
+    'https://cdn4.iconfinder.com/data/icons/instagram-ui-twotone/48/Paul-18-512.png';
 
 export const sadCar = 'https://jooinn.com/images/sad-car-11.png';
 
-export const API_URL = 'http://0c119732e3ad.ngrok.io' + '/api';
+export const API_URL = 'http://9748653f3b40.ngrok.io' + '/api';
