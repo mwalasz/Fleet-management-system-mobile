@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import TextCard from '../../../components/TextCard';
 import Avatar from '../../../components/Avatar';
-import { defaultVehicleImagePath } from '../../../utils/constans';
+import { DEFAULT_VEHICLE_IMAGE } from '../../../utils/constans';
 
 const setColor = (isSelected, theme) => {
     return isSelected ? theme.colors.blue : theme.colors.gray;
@@ -16,7 +16,7 @@ const VehiclesListItem = ({ item, onPress, isSelected, theme }) => (
     >
         <View style={styles.container}>
             <View style={styles.avatar}>
-                <Avatar source={defaultVehicleImagePath} />
+                <Avatar source={DEFAULT_VEHICLE_IMAGE} />
             </View>
             <TextCard
                 title={`${item.brand} ${item.model}`}

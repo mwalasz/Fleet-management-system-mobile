@@ -129,3 +129,4 @@ docs/pages/versions/*/react-native/*.diff
 # Home
 /home/dist
 fleet-management-system-mobile/assets/sampleAssets/
+fleet-management-system-mobile/android/app/build/

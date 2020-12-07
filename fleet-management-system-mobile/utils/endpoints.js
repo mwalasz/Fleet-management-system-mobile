@@ -8,7 +8,7 @@ import {
 
 export const getDriverStatistics = (user, setData) => {
     axios
-        .get(`${API_URL}/statistics/get_driver_statistics?mail=${user.email}`, {
+        .get(`${API_URL}/statistics/driver/get?mail=${user.email}`, {
             withCredentials: true,
             headers: {
                 Authorization: user.token,
@@ -46,7 +46,6 @@ export const getDriverAvatar = (user, setData) => {
             const data = res.data.result;
             if (data != null) {
                 setData(data);
-                console.log('data', data);
             }
         })
         .catch((error) => {

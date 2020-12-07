@@ -25,8 +25,8 @@ const LoginScreen = ({
     wrongRole,
     userName,
 }) => {
-    const [mail, onChangeMail] = React.useState('stasiek@poczta.pl');
-    const [password, onChangePassword] = React.useState('admin');
+    const [mail, onChangeMail] = React.useState('');
+    const [password, onChangePassword] = React.useState('');
     const [isButtonActive, changeButtonActiveness] = React.useState(true);
 
     const checkIfCanLogin = () => {
@@ -53,7 +53,7 @@ const LoginScreen = ({
                     <LogoImage />
                     <LoginFormInput
                         mail
-                        isError={isMailWrong(mail)}
+                        isError={mail.length >= 1 && isMailWrong(mail)}
                         value={mail}
                         onChangeText={(text) => {
                             onChangeMail(text);
